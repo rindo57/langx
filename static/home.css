@@ -1,3 +1,12 @@
 body {
     font-family: 'Fira Sans', sans-serif;
 }
+
+#homePagePic {
+    background-position: url(https://res.cloudinary.com/dxxysm630/image/upload/v1646409318/homePagePic_tmq6rn.jpg);
+    height: 50vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    opacity: 70%;
+}

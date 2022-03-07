@@ -13,6 +13,10 @@ def create_app(test_config=None):
     """ uncomment at the first time running the app """
     db_drop_and_create_all()
 
+    @app.route("/home")
+    def home2():
+        return render_template('home.html')
+
     @app.route('/', methods=['GET'])
     def home():
         return render_template(
