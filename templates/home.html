@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% includes '/partials/navbar.html' %}
-{% block content %}
-<!--Insert background image with text-->
+{% block body %}
+{% includes 'partials/navbar.html' %}
+<!--Insert background image with text
     <div class="container-fluid mt-2" id="homePagePic"></div>
     <div class="container mt-2">
         <div class="row">
-            <div class="col-5 border border-2 border border-dark">
+            <div class="col-5 img-fluid">
                 <img src="https://res.cloudinary.com/dxxysm630/image/upload/v1646409405/learners_zinncu.jpg" alt="language learners" class="img-fluid">
             </div>
             <div class="col-7">
@@ -20,11 +20,12 @@
     <hr>
     <div class="container-fluid">
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium nam quae ratione recusandae. Quo officia blanditiis assumenda ratione velit laborum doloremque amet adipisci fugit autem. Culpa nulla veniam esse excepturi.</p>
-    </div>
-{% endblock content %}
-{% includes '/partials/footer.html' %}
+    </div>-->
 {% block footer %}
+{% include 'partials/footer.html' %}
 {% endblock footer %}
+{% endblock body %}
+
 
 
 
