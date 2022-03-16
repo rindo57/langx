@@ -1,10 +1,36 @@
 {% extends 'base.html' %}
-{% includes '/partials/navbar.html' %}
-{% block content %}
-    
-
-
-{% endblock content %}
-{% includes '/partials/footer.html' %}
+{% block body %}
+{% include 'partials/navbar.html'%}
+<div class="container rounded border border-dark border border-1 text-center w-50 my-4">
+    <form class="row g-3 ms-3" method="POST" action="">
+        <fieldset>
+            <legend class="mt-4">Log In</legend>
+            <div class="row align-items-center">
+                <div class="col mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control") }}
+                </div>
+                <div class="col mb-3">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control") }}
+                </div>
+            </div>
+            <div class="form-check">
+                {{form.remember_user(class="form-check-input")}}
+                {{form.remember_user(class="form-check-label")}}
+            </div>
+        </fieldset>
+    </form>
+</div>
 {% block footer %}
+{% include 'partials/footer.html' %}
 {% endblock footer %}
+{% endblock body %}
+<!---
+                    <label for="emailAddress" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="emailAddress">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password">
+
+-->
+

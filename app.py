@@ -1,8 +1,10 @@
 import os
 import sys
-from flask import Flask, request, abort, jsonify, render_template, url_for
+from turtle import title
+from flask import Flask, request, abort, jsonify, render_template, url_for, flash, redirect
 from flask_cors import CORS
 import traceback
+from forms import LoginForm, RegistrationForm
 from models import setup_db, SampleLocation, db_drop_and_create_all
 
 def create_app(test_config=None):
@@ -10,19 +12,33 @@ def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
-    """ uncomment at the first time running the app """
-    db_drop_and_create_all()
+    """ comment out at the first time running the app """
+    # db_drop_and_create_all()
+    app.config['SECRET_KEY']= 'b7c43167f2d15b477ae15d333596ceb4'
 
     @app.route("/")
     @app.route("/home")
-    def index():
-        return render_template('home.html')
+    def home():
+        return render_template('home.html', title='Home')
+
+    @app.route("/login", methods=['GET', 'POST'])
+    def login():
+        form = LoginForm()
+        return render_template('login.html', title='Login', form=form)
+    
+    @app.route("/register", methods=['GET', 'POST'])
+    def register():
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            flash(f'Welcome to the community {form.firstname.data} {form.lastname.data}!', 'success')
+            return redirect(url_for('home'))
+        return render_template('register.html', title='Register', form=form)
 
     @app.route('/map', methods=['GET'])
-    def home():
+    def location():
         return render_template(
             'map.html', 
-            map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!')
+            map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'), title='Map'
         )
 
     @app.route("/api/store_item")
@@ -82,3 +98,5 @@ app = create_app()
 if __name__ == '__main__':
     port = int(os.environ.get("PORT",5000))
     app.run(host='127.0.0.1',port=port,debug=True)
+
+    

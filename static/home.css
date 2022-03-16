@@ -1,12 +1,17 @@
 body {
-    font-family: 'Fira Sans', sans-serif;
+    margin: 0;
+    padding-top: 67px; /*prevents the fixed-top class of the navbar from overlapping with the body content*/
+    background-color: white;
 }
 
 #homePagePic {
-    background-position: url(https://res.cloudinary.com/dxxysm630/image/upload/v1646409318/homePagePic_tmq6rn.jpg);
-    height: 50vh;
+    background-image: url(https://res.cloudinary.com/dxxysm630/image/upload/q_auto:eco/v1647279704/Language_bkiru2.jpg);
+    height:70vh;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
-    opacity: 70%;
+    background-position: center;    
+}
+
+hr {
+    border-top: 2px solid rgb(48, 47, 3);
 }

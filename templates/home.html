@@ -1,30 +1,61 @@
 {% extends 'base.html' %}
 {% block body %}
-{% includes 'partials/navbar.html' %}
-<!--Insert background image with text
-    <div class="container-fluid mt-2" id="homePagePic"></div>
-    <div class="container mt-2">
+{% include 'partials/navbar.html'%}
+    <div class="img-fluid mt-1 mb-0" id="homePagePic"> <!--Insert Image--> </div>
+    <hr>
+    <div class="container-fluid text-center m-0 p-0">
         <div class="row">
-            <div class="col-5 img-fluid">
-                <img src="https://res.cloudinary.com/dxxysm630/image/upload/v1646409405/learners_zinncu.jpg" alt="language learners" class="img-fluid">
+            <div class="col-sm-6">
+                <h2 class="text-capitalize fw-bolder p-4">Connecting language learners</h2>   
+                <p class="ms-3 fs-5">
+                <strong>
+                Linguaphiles is a social network to learn languages and meet people.
+                Get the opportunity to instantly interact with native speakers nearby.
+                who will teach you their language, while you teach them yours.
+                </strong>
+                </p>  
             </div>
-            <div class="col-7">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae ipsum consectetur aliquam quo perspiciatis porro autem inventore veniam maiores, ab sapiente expedita nobis ipsa earum, aliquid mollitia ipsam doloribus explicabo fugit harum! Omnis porro sint explicabo cupiditate quidem, aperiam, error sapiente vero ut laborum quis voluptatibus quo, accusamus officia sit.</p>
+            <div class="col-sm-6">
+                <img class="img-fluid rounded border border-dark" src="https://res.cloudinary.com/dxxysm630/image/upload/v1646409405/learners_zinncu.jpg" alt="language learners">
             </div>
         </div>
     </div>
     <hr>
-    <div class="container-fluid">
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A nihil minima vitae facere eveniet eaque assumenda, ipsam consequatur, nobis, neque odit facilis rerum doloribus quo officia reiciendis exercitationem ipsa! Iure dolorem explicabo optio atque consequuntur fuga quasi corporis ipsam rem ullam autem magni eum expedita temporibus, vero, reprehenderit ducimus delectus. Voluptates perspiciatis accusamus, sed beatae quisquam quo rem libero iste, nisi a eum. Nobis ipsa atque quam reiciendis assumenda a animi laborum, aut soluta illo facilis vitae, recusandae alias ad quas maxime deleniti id porro totam culpa error tempore. Magnam laborum suscipit nihil harum neque commodi libero facilis delectus dicta.</p>
+    <div class="container-fluid text-center m-0 p-0">
+        <div class="row">
+            <div class="col-sm-6">
+                <img class="img-fluid rounded border border-dark border border-1 ms-1" src="https://res.cloudinary.com/dxxysm630/image/upload/v1647256464/connection_i6cvcj.jpg" alt="user connection">
+            </div>
+            <div class="col-sm-6">
+                <h2 class="text-capitalize fw-bolder p-4">How to get started</h2>   
+                <p class="fs-5">
+                <strong>
+                Simply sign up, select languages that you know and want to learn, 
+                and instantly connect with language learners/experts.
+                <br>
+                You and your language partner can tailor your sessions however you want.
+                You do not need to stay in your room and hog the laptop camera, 
+                you can go outdoors and learn on the go.
+                </strong>
+            </div>
+        </div>
     </div>
     <hr>
-    <div class="container-fluid">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium nam quae ratione recusandae. Quo officia blanditiis assumenda ratione velit laborum doloremque amet adipisci fugit autem. Culpa nulla veniam esse excepturi.</p>
-    </div>-->
+    <div class="container-fluid text-center">
+        <h2 class="text-capitalize fw-bolder">Join our worldwide community</h2>
+        <p class="fs-5">
+        Download Linguaphiles for free now in the AppStore and Playstore
+        </p>
+        <a class="btn btn-dark btn-lg text-danger font-weight-light" href="http://www.apple.com/de/store" target="_blank"><i class="fa-brands fa-apple"></i> App store</a>
+        <a class="btn btn-dark btn-lg text-danger font-weight-light" href="http://play.google.com/store" target="_blank"><i class="fa-brands fa-google-play"></i> Play store</a>
+    </div>
+    <hr>
 {% block footer %}
 {% include 'partials/footer.html' %}
 {% endblock footer %}
 {% endblock body %}
+
+
 
 
 
