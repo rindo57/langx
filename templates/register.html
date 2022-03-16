@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% include '/partials/navbar.html' %}
+{% block body %}
+    <div class="container rounded border border-dark border border-1 my-4 text-center w-50">
+        <form class="row g-3" method="POST" action="">
+            <!-- Adds the CSRF token-->
+            {{  form.hidden_tag() }}
+            <fieldset>
+                <legend class="ms-1 fw-bold text-dark text-capitalize mb-3">Join our community</legend>
+                <div class="row align-items-center g-3 mt-3">
+                    <div class="col-sm-6">
+                        {{ form.firstname.label(class="form-label") }}
+                        {{ form.firstname(class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.lastname.label(class="form-label") }}
+                        {{ form.lastname(class="form-control") }}
+                    </div>
+                </div>
+                <div class="row align-items-center g-3 mt-3">
+                    <div class="col-sm-6">
+                        {{ form.city.label(class="form-label") }}
+                        {{ form.city(class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control") }}
+                    </div>
+                </div>
+                <div class="row align-items-center g-3 mt-3">
+                    <div class="col-sm-6">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.repeat_password.label(class="form-label") }}
+                        {{ form.repeat_password(class="form-control") }}
+                    </div>
+                </div>
+            </fieldset>
+            <button>
+                {{ form.submit(class="btn btn-dark btn-lg mb-3"") }}
+            </button>
+        </form>
+    </div>
+{% block footer %}
+{% include 'partials/footer.html' %}
+{% endblock footer %}
+{% endblock body %}
