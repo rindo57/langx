@@ -12,6 +12,17 @@ from geoalchemy2.shape import from_shape
 
 db = SQLAlchemy()
 
+class AppUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(10), unique=True, nullable=False)
+    lastname = db.Column(db.String(10), unique=True, nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    profile_pic = db.Column(db.String(20), nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+
+    def __repr__(self):
+        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.image_file}')"
+
 '''
 setup_db(app):
     binds a flask application and a SQLAlchemy service

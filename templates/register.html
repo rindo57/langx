@@ -1,46 +1,114 @@
 {% extends 'base.html' %}
 {% include '/partials/navbar.html' %}
 {% block body %}
-    <div class="container rounded border border-dark border border-1 my-4 text-center w-50">
-        <form class="row g-3" method="POST" action="">
+    <div class="container rounded border border-dark border border-1 my-4 text-center w-50 bg-light">
+        <form class="row g-3" method="POST" action="" novalidate>
             <!-- Adds the CSRF token-->
             {{  form.hidden_tag() }}
             <fieldset>
-                <legend class="ms-1 fw-bold text-dark text-capitalize mb-3">Join our community</legend>
+                <legend class="fw-bold my-3 border-bottom">Join Our Community</legend>
                 <div class="row align-items-center g-3 mt-3">
                     <div class="col-sm-6">
                         {{ form.firstname.label(class="form-label") }}
-                        {{ form.firstname(class="form-control") }}
+                        {% if form.firstname.errors %}
+                            {{ form.firstname(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.firstname.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.firstname(class="form-control") }}
+                        {% endif %}
                     </div>
                     <div class="col-sm-6">
                         {{ form.lastname.label(class="form-label") }}
-                        {{ form.lastname(class="form-control") }}
+                        {% if form.lastname.errors %}
+                            {{ form.lastname(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.lastname.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.lastname(class="form-control") }}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row align-items-center g-3 mt-3">
                     <div class="col-sm-6">
                         {{ form.city.label(class="form-label") }}
-                        {{ form.city(class="form-control") }}
+                        {% if form.city.errors %}
+                            {{ form.city(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.city.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.city(class="form-control") }}
+                        {% endif %}
                     </div>
                     <div class="col-sm-6">
                         {{ form.email.label(class="form-label") }}
-                        {{ form.email(class="form-control") }}
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.city.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control") }}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row align-items-center g-3 mt-3">
                     <div class="col-sm-6">
                         {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.city.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.password(class="form-control") }}
+                        {% endif %}
                     </div>
                     <div class="col-sm-6">
                         {{ form.repeat_password.label(class="form-label") }}
-                        {{ form.repeat_password(class="form-control") }}
+                        {% if form.repeat_password.errors %}
+                            {{ form.repeat_password(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.city.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.repeat_password(class="form-control") }}
+                        {% endif %}
                     </div>
                 </div>
+                <div class="row align-items-center g-3 mt-3">
+                    <div class="col-sm-6">
+                        {{ form.languages.label(class="form-label") }}
+                        {{ form.languages(class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form.other_languages.label(class="form-label") }}
+                        {{ form.other_languages(class="form-control") }}
+                    </div>
+                </div>
+                <div class="row-8 mt-3">
+                    {{ form.interests.label(class="form-label") }}
+                    {{ form.interests(class="form-control") }}
+                </div>
             </fieldset>
-            <button>
-                {{ form.submit(class="btn btn-dark btn-lg mb-3"") }}
-            </button>
+            <div>
+                {{ form.submit(class="btn btn-dark btn-lg my-3") }}
+            </div>
         </form>
     </div>
 {% block footer %}

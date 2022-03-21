@@ -5,13 +5,18 @@ body {
 }
 
 #homePagePic {
-    background-image: url(https://res.cloudinary.com/dxxysm630/image/upload/q_auto:eco/v1647279704/Language_bkiru2.jpg);
-    height:70vh;
+    background-image: url(https://res.cloudinary.com/dxxysm630/image/upload/v1647447728/Language3_gxr2i4.jpg);
+    height:75vh;
     background-repeat: no-repeat;
     background-size: cover;
+    opacity: 100%;
     background-position: center;    
 }
 
 hr {
     border-top: 2px solid rgb(48, 47, 3);
+}
+
+footer {
+    bottom: 0;
 }

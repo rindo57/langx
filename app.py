@@ -6,6 +6,8 @@ from flask_cors import CORS
 import traceback
 from forms import LoginForm, RegistrationForm
 from models import setup_db, SampleLocation, db_drop_and_create_all
+from flask_bcrypt import Bcrypt
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -16,6 +18,10 @@ def create_app(test_config=None):
     # db_drop_and_create_all()
     app.config['SECRET_KEY']= 'b7c43167f2d15b477ae15d333596ceb4'
 
+    # hashing the user's password
+    bcrypt = Bcrypt(app)
+
+
     @app.route("/")
     @app.route("/home")
     def home():
@@ -24,12 +30,19 @@ def create_app(test_config=None):
     @app.route("/login", methods=['GET', 'POST'])
     def login():
         form = LoginForm()
+        if form.validate_on_submit():
+            if form.email.data == 'admin@blog.com' and form.password.data == 'testings':
+                flash('Successfully logged in!', 'success')
+                return redirect(url_for('home'))
+            else:
+                flash('Login Unsuccessful - Please check your email and password', 'danger')
         return render_template('login.html', title='Login', form=form)
     
     @app.route("/register", methods=['GET', 'POST'])
     def register():
         form = RegistrationForm()
         if form.validate_on_submit():
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             flash(f'Welcome to the community {form.firstname.data} {form.lastname.data}!', 'success')
             return redirect(url_for('home'))
         return render_template('register.html', title='Register', form=form)

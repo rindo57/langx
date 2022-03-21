@@ -1,22 +1,31 @@
 {% extends 'base.html' %}
 {% block body %}
 {% include 'partials/navbar.html'%}
-    <div class="img-fluid mt-1 mb-0" id="homePagePic"> <!--Insert Image--> </div>
+    <!-- Flash message for accounted created -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <!-- site content -->
+    <div class="img-fluid mt-1 mb-0 border border-dark" id="homePagePic"> <!--Insert Image--> </div>
     <hr>
     <div class="container-fluid text-center m-0 p-0">
         <div class="row">
             <div class="col-sm-6">
-                <h2 class="text-capitalize fw-bolder p-4">Connecting language learners</h2>   
+                <h2 class="text-capitalize p-3">Connecting language learners</h2>   
                 <p class="ms-3 fs-5">
-                <strong>
                 Linguaphiles is a social network to learn languages and meet people.
                 Get the opportunity to instantly interact with native speakers nearby.
                 who will teach you their language, while you teach them yours.
-                </strong>
                 </p>  
             </div>
             <div class="col-sm-6">
-                <img class="img-fluid rounded border border-dark" src="https://res.cloudinary.com/dxxysm630/image/upload/v1646409405/learners_zinncu.jpg" alt="language learners">
+                <img class="img-fluid rounded border border-dark" src="https://res.cloudinary.com/dxxysm630/image/upload/v1647446549/Language2_ajbf5d.jpg" alt="language learners">
             </div>
         </div>
     </div>
@@ -27,29 +36,26 @@
                 <img class="img-fluid rounded border border-dark border border-1 ms-1" src="https://res.cloudinary.com/dxxysm630/image/upload/v1647256464/connection_i6cvcj.jpg" alt="user connection">
             </div>
             <div class="col-sm-6">
-                <h2 class="text-capitalize fw-bolder p-4">How to get started</h2>   
+                <h2 class="text-capitalize p-3">How to get started</h2>   
                 <p class="fs-5">
-                <strong>
                 Simply sign up, select languages that you know and want to learn, 
                 and instantly connect with language learners/experts.
                 <br>
                 You and your language partner can tailor your sessions however you want.
                 You do not need to stay in your room and hog the laptop camera, 
                 you can go outdoors and learn on the go.
-                </strong>
             </div>
         </div>
     </div>
     <hr>
-    <div class="container-fluid text-center">
-        <h2 class="text-capitalize fw-bolder">Join our worldwide community</h2>
+    <div class="container-fluid text-center mb-3">
+        <h2 class="text-capitalize p-3">Join our worldwide community</h2>
         <p class="fs-5">
         Download Linguaphiles for free now in the AppStore and Playstore
         </p>
         <a class="btn btn-dark btn-lg text-danger font-weight-light" href="http://www.apple.com/de/store" target="_blank"><i class="fa-brands fa-apple"></i> App store</a>
         <a class="btn btn-dark btn-lg text-danger font-weight-light" href="http://play.google.com/store" target="_blank"><i class="fa-brands fa-google-play"></i> Play store</a>
     </div>
-    <hr>
 {% block footer %}
 {% include 'partials/footer.html' %}
 {% endblock footer %}
