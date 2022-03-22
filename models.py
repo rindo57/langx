@@ -9,10 +9,17 @@ from geoalchemy2.functions import ST_DWithin
 from geoalchemy2.types import Geography
 from sqlalchemy.sql.expression import cast
 from geoalchemy2.shape import from_shape
+from flask_login import LoginManager, UserMixin
+#from flask import create_app
+#from app import login_manager
 
 db = SQLAlchemy()
+#app = create_app()
 
-class AppUser(db.Model):
+#required to enable registered app users to log in
+#login_manager = LoginManager(app)
+
+class AppUser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(10), unique=True, nullable=False)
     lastname = db.Column(db.String(10), unique=True, nullable=False)

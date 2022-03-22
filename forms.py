@@ -1,8 +1,10 @@
 from random import choices
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectMultipleField, SelectField
+#from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from models import AppUser
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -22,3 +24,9 @@ class RegistrationForm(FlaskForm):
     other_languages = SelectMultipleField('Select the language(s) you want to learn', validators=[DataRequired()], choices=options)
     interests = TextAreaField('Describe your Interests and ideal language exchange partner', validators=[DataRequired(), Length(max=300)])
     submit = SubmitField('Confirm Registration')
+
+    def validate_email(self, email):
+        user = AppUser.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('This email is taken, please select a different one.')
+

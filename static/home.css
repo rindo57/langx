@@ -17,6 +17,10 @@ hr {
     border-top: 2px solid rgb(48, 47, 3);
 }
 
+.form-check .form-check-input {
+    float: none;
+}
+
 footer {
     bottom: 0;
 }
