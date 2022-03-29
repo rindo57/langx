@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer,create_engine
 from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2.types import Geometry
 from shapely.geometry import Point
@@ -9,26 +9,43 @@ from geoalchemy2.functions import ST_DWithin
 from geoalchemy2.types import Geography
 from sqlalchemy.sql.expression import cast
 from geoalchemy2.shape import from_shape
-from flask_login import LoginManager, UserMixin
-#from flask import create_app
-#from app import login_manager
+from flask_login import UserMixin
 
 db = SQLAlchemy()
-#app = create_app()
-
-#required to enable registered app users to log in
-#login_manager = LoginManager(app)
 
 class AppUser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(10), unique=True, nullable=False)
-    lastname = db.Column(db.String(10), unique=True, nullable=False)
+    firstname = db.Column(db.String(10), nullable=False)
+    lastname = db.Column(db.String(10), nullable=False)
+    street = db.Column(db.String(20), nullable=False)
+    house = db.Column(db.Integer, nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
     profile_pic = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
+    #fluent_languages = db.Column(db.Text, nullable=False)
+    #other_languages = db.Column(db.Text, nullable=False)
+    interests = db.Column(db.Text, nullable=False)
+    #languages = db.relationship('Languages', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.image_file}')"
+        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.street}', \
+            '{self.house}','{self.profile_pic}', '{self.interests}')"
+
+"""class Languages(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    fluent_languages = db.Column(db.String(200), nullable=False)
+    other_languages = db.Column(db.Text(200), nullable=False)
+
+    #appuser_id = db.Column(db.Integer, db.ForeignKey('AppUser.id'), nullable=False)
+    #appuser = db.relationship('AppUser', backref='languages')
+
+    def __repr__(self):
+        return f"Languages('{self.languages}'"""
+
+'''class OtherLanguages(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    appuser_id = db.Column(db.Integer, db.ForeignKey('appuser.id'), nullable=False)'''
+    #language_id = db.relationship(db.Integer, db.ForeignKey('languages.id'))
 
 '''
 setup_db(app):
@@ -47,8 +64,9 @@ def setup_db(app):
 
 '''
     drops the database tables and starts fresh
-    can be used to initialize a clean database
+    can be used to initialize a clean database 
 '''
+
 def db_drop_and_create_all():
     db.drop_all()
     db.create_all()

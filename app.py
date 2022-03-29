@@ -1,14 +1,14 @@
-import email
 import os
 import sys
-from turtle import title
+import tkinter as tk
 from flask import Flask, request, abort, jsonify, render_template, url_for, flash, redirect
 from flask_cors import CORS
 import traceback
 from forms import LoginForm, RegistrationForm
-from models import AppUser, setup_db, SampleLocation, db_drop_and_create_all, db
-from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, login_user
+from models import setup_db, SampleLocation, db_drop_and_create_all,db, AppUser
+from flask_bcrypt import Bcrypt, bcrypt
+from flask_login import LoginManager
+from flask_login import login_user, current_user, logout_user, login_required
 
 
 def create_app(test_config=None):
@@ -17,16 +17,23 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
     """ comment out at the first time running the app """
-    # db_drop_and_create_all()
-    
-    app.config['SECRET_KEY']= 'b7c43167f2d15b477ae15d333596ceb4'
+    #db_drop_and_create_all()
+    app.config['SECRET_KEY']= '66cb9ba6becd134af4b68a05fddf19aa'
     
     # hashing the user's password
     bcrypt = Bcrypt(app)
     
-    # class required to enable registered app users to log in
+    # Required to enable registered app users to log in
     login_manager = LoginManager(app)
     login_manager.init_app(app)
+
+    # Further to the login_required decorator, this sets/sends the user to the route required
+    # before accessing the desired page which in this case is the 'profile page' for a user that
+    # hasn't logged in yet
+    login_manager.login_view = 'login'
+
+    # Flash alert for the login required message
+    login_manager.login_message_category = 'warning'
 
     # Function that reloads the user from the user id stored in the session
     @login_manager.user_loader
@@ -37,35 +44,62 @@ def create_app(test_config=None):
     @app.route("/")
     @app.route("/home")
     def home():
-        return render_template('home.html', title='Home')
-
-    @app.route("/login", methods=['GET', 'POST'])
-    def login():
-        form = LoginForm()
-        if form.validate_on_submit():
-            user = AppUser.query.filter_by(email==form.email.data).first()
-            if user and bcrypt.check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                return redirect(url_for('home'))
-            else:
-                flash('Login Unsuccessful - Please check your email and password', 'danger')
-        return render_template('login.html', title='Login', form=form)
+        print('Home route running')
+        return render_template('home.html')
     
     @app.route("/register", methods=['GET', 'POST'])
     def register():
+        if current_user.is_authenticated:
+            return redirect(url_for('home'))
         form = RegistrationForm()
         if form.validate_on_submit():
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             # create the app user instance
-            user = AppUser(firstname=form.firstname.data, lastname=form.lastname.data, email=form.email.data, password=hashed_password)
+            app_user = AppUser(firstname=form.firstname.data, lastname=form.lastname.data, street=form.street.data, house=form.house.data,
+            email=form.email.data, password=hashed_password, interests=form.interests.data)
             # add the app user to the database
-            db.session.add(user)
+            print(app_user)
+            db.session.add(app_user)
             # commit the change - now the user can log in
             db.session.commit() 
             flash(f'Account created - Welcome to the community {form.firstname.data} {form.lastname.data}!', 'success')
             return redirect(url_for('login'))
         return render_template('register.html', title='Register', form=form)
 
+    @app.route("/login", methods=['GET', 'POST'])
+    def login():
+        print("Login info", flush=True)
+        if current_user.is_authenticated:
+            return redirect(url_for('home'))
+        form = LoginForm()
+        if form.validate_on_submit():
+            print('form validated')
+            app_user = AppUser.query.filter_by(email=form.email.data).first()
+            # checking if credentials used exist in the db
+            print(app_user)
+            if app_user and bcrypt.check_password_hash(app_user.password, form.password.data):
+                print("There's a password match")
+                login_user(app_user, remember=form.remember_user.data)
+                # access the query paramater after login if it exists
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('home'))
+            else:
+                print('Failed flash message - auth failed')
+                flash('Login unsuccessful, please check your email and password', 'danger')
+        return render_template('login.html', title='Login', form=form)
+
+    @app.route("/profile")
+    # The app user has to be logged in to access this profile page
+    @login_required
+    def profile():
+        profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
+        return render_template('profile.html', title='Profile', profile_pic = profile_pic)
+
+    @app.route("/logout")
+    def logout():
+        logout_user()
+        return redirect(url_for('home'))
+    
     @app.route('/map', methods=['GET'])
     def location():
         return render_template(

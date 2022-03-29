@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block body %}
+{% include 'partials/navbar.html'%}
+    <!-- Profile section - Horizontal Cards -->
+    <div class="container d-flex justify-content-center">
+        <div class="card my-3 text-dark bg-light border-dark" style="max-width: 700px;">
+            <div class="row g-0">
+              <div class="col-md-5">
+                <!-- <img src="{{ profile_pic }}" class="img-fluid card-img-top" alt="..."> -->
+                <img src="https://picsum.photos/id/1010/400/" class="img-fluid card-img-top" alt="...">
+              </div>
+              <div class="col-md-7">
+                <div class="card-body">
+                    <!-- Form Details Here -->
+                    <h5 class="card-title">{{current_user.firstname}} {{ current_user.lastname }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><i class="fa-solid fa-location-dot"></i> {{ current_user.street_name}} {{ current_user.house_number }}</h6> <!--location-->
+                    <p class="card-text"><i class="fa-solid fa-language"></i> {{ current_user.languages }}</p> <!--users languages-->
+                    <p class="card-text"><i class="fa-brands fa-leanpub"></i> {{ current_user.other_languages }}</p> <!--langs to learn -->
+                    <p class="card-text"><i class="fa-solid fa-network-wired"></i> {{ current_user.interests }}</p><!--Interests-->
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="container d-flex justify-content-center mb-3">
+        <div class="card text-dark bg-light border-dark" style="width: 28rem;">
+            <div class="card-body">
+                <h5 class="card-title">Map</h5>
+                <!-- Insert the map and delete the header-->
+                <p>Map content here</p>
+            </div>
+        </div>
+    </div>
+{% block footer %}
+{% include 'partials/footer.html' %}
+{% endblock footer %}
+{% endblock body %}

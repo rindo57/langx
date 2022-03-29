@@ -1,18 +1,10 @@
 {% extends 'base.html' %}
 {% block body %}
 {% include 'partials/navbar.html'%}
-    <!-- Flash message for accounted created -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-              {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
     <!-- site content -->
-    <div class="img-fluid mt-1 mb-0 border border-dark" id="homePagePic"> <!--Insert Image--> </div>
+    <div class="img-fluid mt-1 mb-0 border border-dark" id="homePagePic">
+        <!--Insert Welcome Image With Greetings From Various Languages--> 
+    </div>
     <hr>
     <div class="container-fluid text-center m-0 p-0">
         <div class="row">
@@ -25,7 +17,7 @@
                 </p>  
             </div>
             <div class="col-sm-6">
-                <img class="img-fluid rounded border border-dark" src="https://res.cloudinary.com/dxxysm630/image/upload/v1647446549/Language2_ajbf5d.jpg" alt="language learners">
+                <img class="img-fluid rounded border border-dark" src="https://res.cloudinary.com/dxxysm630/image/upload/v1647446549/Language2_ajbf5d.jpg" alt="list of languages in yellow notes">
             </div>
         </div>
     </div>
@@ -33,7 +25,7 @@
     <div class="container-fluid text-center m-0 p-0">
         <div class="row">
             <div class="col-sm-6">
-                <img class="img-fluid rounded border border-dark border border-1 ms-1" src="https://res.cloudinary.com/dxxysm630/image/upload/v1647256464/connection_i6cvcj.jpg" alt="user connection">
+                <img class="img-fluid rounded border border-dark border border-1 ms-1" src="https://res.cloudinary.com/dxxysm630/image/upload/v1647256464/connection_i6cvcj.jpg" alt="Lady on the street using her phone">
             </div>
             <div class="col-sm-6">
                 <h2 class="text-capitalize p-3">How to get started</h2>   

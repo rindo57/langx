@@ -25,11 +25,11 @@
                         {{ form.lastname.label(class="form-label") }}
                         {% if form.lastname.errors %}
                             {{ form.lastname(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.lastname.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
+                                <div class="invalid-feedback">
+                                    {% for error in form.lastname.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
                         {% else %}
                             {{ form.lastname(class="form-control") }}
                         {% endif %}
@@ -37,24 +37,39 @@
                 </div>
                 <div class="row align-items-center g-3 mt-3">
                     <div class="col-sm-6">
-                        {{ form.city.label(class="form-label") }}
-                        {% if form.city.errors %}
-                            {{ form.city(class="form-control is-invalid") }}
+                        {{ form.street.label(class="form-label") }}
+                        {% if form.street.errors %}
+                            {{ form.street(class="form-control is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in form.city.errors %}
+                                {% for error in form.street.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.city(class="form-control") }}
+                            {{ form.street(class="form-control") }}
                         {% endif %}
                     </div>
                     <div class="col-sm-6">
+                        {{ form.house.label(class="form-label") }}
+                        {% if form.house.errors %}
+                            {{ form.house(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.house.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.house(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row g-3 mt-3">
+                    <div class="col-sm-12">
                         {{ form.email.label(class="form-label") }}
                         {% if form.email.errors %}
                             {{ form.email(class="form-control is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in form.city.errors %}
+                                {% for error in form.email.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
@@ -69,7 +84,7 @@
                         {% if form.password.errors %}
                             {{ form.password(class="form-control is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in form.city.errors %}
+                                {% for error in form.password.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
@@ -82,7 +97,7 @@
                         {% if form.repeat_password.errors %}
                             {{ form.repeat_password(class="form-control is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in form.city.errors %}
+                                {% for error in form.repeat_password.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
@@ -94,16 +109,43 @@
                 <div class="row align-items-center g-3 mt-3">
                     <div class="col-sm-6">
                         {{ form.languages.label(class="form-label") }}
-                        {{ form.languages(class="form-control") }}
+                        {% if form.languages.errors %}
+                            {{ form.languages(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.languages.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.languages(class="form-control") }}
+                        {% endif %}
                     </div>
                     <div class="col-sm-6">
                         {{ form.other_languages.label(class="form-label") }}
-                        {{ form.other_languages(class="form-control") }}
+                        {% if form.other_languages.errors %}
+                            {{ form.other_languages(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.other_languages.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.other_languages(class="form-control") }}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row-8 mt-3">
                     {{ form.interests.label(class="form-label") }}
-                    {{ form.interests(class="form-control") }}
+                    {% if form.interests.errors %}
+                        {{ form.interests(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.interests.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.interests(class="form-control") }}
+                    {% endif %}
                 </div>
             </fieldset>
             <div>

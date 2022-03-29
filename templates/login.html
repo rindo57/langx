@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
 {% block body %}
 {% include 'partials/navbar.html'%}
+    <div class="container text-center w-50 fw-bolder">
+    <!-- Flash message for accounted created -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-2">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
     <div class="container rounded border border-dark border border-1 text-center w-50 my-5 bg-light" >
         <form class="row" method="POST" action="" novalidate>
+            <!-- Adds the CSRF token-->
+            {{  form.hidden_tag() }}
             <fieldset>
                 <legend class="my-4 fw-bold border-bottom">Welcome Back!</legend>
                 <div class="mt-1">
@@ -46,7 +60,7 @@
         </form>
         <div class="border-top pt-3">
             <small class="text-muted my-4">
-                Need Around Here? <a class="ml-2" href="{{ url_for('register') }}">Register Now</a>
+                Are You New Around Here? <a class="ml-2" href="{{ url_for('register') }}">Register Now</a>
             </small>
         </div>
     </div>
