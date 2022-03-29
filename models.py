@@ -22,30 +22,14 @@ class AppUser(db.Model, UserMixin):
     email = db.Column(db.String(50), unique=True, nullable=False)
     profile_pic = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    #fluent_languages = db.Column(db.Text, nullable=False)
-    #other_languages = db.Column(db.Text, nullable=False)
+    fluent_languages = db.Column(db.Text, nullable=False)
+    other_languages = db.Column(db.Text, nullable=False)
     interests = db.Column(db.Text, nullable=False)
     #languages = db.relationship('Languages', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.street}', \
-            '{self.house}','{self.profile_pic}', '{self.interests}')"
-
-"""class Languages(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    fluent_languages = db.Column(db.String(200), nullable=False)
-    other_languages = db.Column(db.Text(200), nullable=False)
-
-    #appuser_id = db.Column(db.Integer, db.ForeignKey('AppUser.id'), nullable=False)
-    #appuser = db.relationship('AppUser', backref='languages')
-
-    def __repr__(self):
-        return f"Languages('{self.languages}'"""
-
-'''class OtherLanguages(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    appuser_id = db.Column(db.Integer, db.ForeignKey('appuser.id'), nullable=False)'''
-    #language_id = db.relationship(db.Integer, db.ForeignKey('languages.id'))
+        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.street}', '{self.house}', \
+             '{self.fluent_languages}', '{self.other_languages}','{self.profile_pic}', '{self.interests}')"
 
 '''
 setup_db(app):
