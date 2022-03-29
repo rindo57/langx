@@ -6,16 +6,16 @@
         <div class="card my-3 text-dark bg-light border-dark" style="max-width: 700px;">
             <div class="row g-0">
               <div class="col-md-5">
-                <!-- <img src="{{ profile_pic }}" class="img-fluid card-img-top" alt="..."> -->
-                <img src="https://picsum.photos/id/1010/400/" class="img-fluid card-img-top" alt="...">
+                <!--App User's Profile Picture -->
+                <img src="{{ profile_pic }}" class="img-fluid card-img-top" alt="...">
               </div>
               <div class="col-md-7">
                 <div class="card-body">
                     <!-- Form Details Here -->
                     <h5 class="card-title">{{current_user.firstname}} {{ current_user.lastname }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><i class="fa-solid fa-location-dot"></i> {{ current_user.street_name}} {{ current_user.house_number }}</h6> <!--location-->
-                    <p class="card-text"><i class="fa-solid fa-language"></i> {{ current_user.languages }}</p> <!--users languages-->
-                    <p class="card-text"><i class="fa-brands fa-leanpub"></i> {{ current_user.other_languages }}</p> <!--langs to learn -->
+                    <h6 class="card-subtitle my-3"><i class="fa-solid fa-location-dot"></i> {{ current_user.street}} {{ current_user.house }}</h6> <!--location-->
+                    <p class="card-text"><i class="fa-solid fa-language"></i> Speaks {{current_user.fluent_languages}} </p> <!--users languages-->
+                    <p class="card-text"><i class="fa-brands fa-leanpub"></i> Wants to learn {{ current_user.other_languages }}</p> <!--langs to learn -->
                     <p class="card-text"><i class="fa-solid fa-network-wired"></i> {{ current_user.interests }}</p><!--Interests-->
                 </div>
               </div>

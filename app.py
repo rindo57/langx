@@ -55,7 +55,8 @@ def create_app(test_config=None):
         if form.validate_on_submit():
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             # create the app user instance
-            app_user = AppUser(firstname=form.firstname.data, lastname=form.lastname.data, street=form.street.data, house=form.house.data,
+            app_user = AppUser(firstname=form.firstname.data, lastname=form.lastname.data, street=form.street.data, 
+            house=form.house.data, fluent_languages=form.fluent_languages.data, other_languages=form.other_languages.data, 
             email=form.email.data, password=hashed_password, interests=form.interests.data)
             # add the app user to the database
             print(app_user)

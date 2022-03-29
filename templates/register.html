@@ -108,16 +108,16 @@
                 </div>
                 <div class="row align-items-center g-3 mt-3">
                     <div class="col-sm-6">
-                        {{ form.languages.label(class="form-label") }}
-                        {% if form.languages.errors %}
-                            {{ form.languages(class="form-control is-invalid") }}
+                        {{ form.fluent_languages.label(class="form-label") }}
+                        {% if form.fluent_languages.errors %}
+                            {{ form.fluent_languages(class="form-control is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in form.languages.errors %}
+                                {% for error in form.fluent_languages.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.languages(class="form-control") }}
+                            {{ form.fluent_languages(class="form-control") }}
                         {% endif %}
                     </div>
                     <div class="col-sm-6">

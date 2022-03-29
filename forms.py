@@ -22,7 +22,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     repeat_password = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
     options=['12 available options:', 'French', 'Spanish', 'English', 'Portuguese', 'Chinese', 'German','Khoisan', 'Korean', 'Swahili', 'Japanese', 'Russian', 'Arabic']
-    languages = SelectMultipleField('Select your native and fluent language(s)', validators=[DataRequired()], choices=options)
+    fluent_languages = SelectMultipleField('Select your native and fluent language(s)', validators=[DataRequired()], choices=options)
     other_languages = SelectMultipleField('Select the language(s) you want to learn', validators=[DataRequired()], choices=options)
     interests = TextAreaField('Describe your Interests and ideal language exchange partner', validators=[DataRequired(), Length(max=300)])
     submit = SubmitField('Confirm Registration')
