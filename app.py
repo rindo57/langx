@@ -1,12 +1,16 @@
 import os
+import secrets
+from turtle import title
+from PIL import Image
 import sys
 import tkinter as tk
 from flask import Flask, request, abort, jsonify, render_template, url_for, flash, redirect
 from flask_cors import CORS
+# import jyserver.Flask as jsf  - This import enables HTML DOM
 import traceback
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, UpdateProfileForm
 from models import setup_db, SampleLocation, db_drop_and_create_all,db, AppUser
-from flask_bcrypt import Bcrypt, bcrypt
+from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -32,7 +36,7 @@ def create_app(test_config=None):
     # hasn't logged in yet
     login_manager.login_view = 'login'
 
-    # Flash alert for the login required message
+    # Flash alert for the login required message as - 'Please log in to access this page'
     login_manager.login_message_category = 'warning'
 
     # Function that reloads the user from the user id stored in the session
@@ -44,7 +48,7 @@ def create_app(test_config=None):
     @app.route("/")
     @app.route("/home")
     def home():
-        print('Home route running')
+        #print('Home route running')
         return render_template('home.html')
     
     @app.route("/register", methods=['GET', 'POST'])
@@ -59,7 +63,7 @@ def create_app(test_config=None):
             house=form.house.data, fluent_languages=form.fluent_languages.data, other_languages=form.other_languages.data, 
             email=form.email.data, password=hashed_password, interests=form.interests.data)
             # add the app user to the database
-            print(app_user)
+            #print(app_user)
             db.session.add(app_user)
             # commit the change - now the user can log in
             db.session.commit() 
@@ -69,32 +73,91 @@ def create_app(test_config=None):
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():
-        print("Login info", flush=True)
+        #print("Login info", flush=True)
         if current_user.is_authenticated:
-            return redirect(url_for('home'))
+            return redirect(url_for('news'))
         form = LoginForm()
         if form.validate_on_submit():
-            print('form validated')
+            #print('form validated')
             app_user = AppUser.query.filter_by(email=form.email.data).first()
             # checking if credentials used exist in the db
-            print(app_user)
+            #print(app_user)
             if app_user and bcrypt.check_password_hash(app_user.password, form.password.data):
                 print("There's a password match")
                 login_user(app_user, remember=form.remember_user.data)
-                # access the query paramater after login if it exists
+                '''The aim here is to access the query paramater(next?%profile) after login if it exists
+                Initially when trying to access the profile page without logging in the user was redirected
+                to the log in page and the flash message appeared as - 'Please log in to access this page'
+                however after logging in the user is still redirected to the home page and not the 
+                profile page(which the user wanted to access beforehand) so to avoid this we include the below 
+                next_page code which will redirect the user to the page they were trying to access after logging 
+                in instead of the home page'''
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('home'))
             else:
-                print('Failed flash message - auth failed')
+                #print('Failed flash message - auth failed')
                 flash('Login unsuccessful, please check your email and password', 'danger')
         return render_template('login.html', title='Login', form=form)
 
-    @app.route("/profile")
+    @app.route("/profile", methods=['GET', 'POST'])
     # The app user has to be logged in to access this profile page
     @login_required
     def profile():
         profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
         return render_template('profile.html', title='Profile', profile_pic = profile_pic)
+
+    @app.route("/news", methods=['GET', 'POST'])
+    @login_required
+    def news():
+        return render_template('news.html', title='Top News')
+
+        # Saving user's picture as a random HEX by importing secrets module
+    def save_picture(form_picture):
+        random_hex = secrets.token_hex(8)
+
+        # Making sure the file is saved under the same extension it was uploaded in by importing os module
+        _, f_ext = os.path.splitext(form_picture.filename)
+        picture_filename = random_hex + f_ext
+        picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_filename)
+        
+        '''Resizing Images before saving the on the file py installing the Pillow package 
+        and importing the image class from PIL. By doing this we save space and reduce the
+        website/App loading time'''
+        output_size = (400, 400)
+        i = Image.open(form_picture)
+        i.thumbnail(output_size)
+        i.save(picture_path)
+        return picture_filename
+
+    @app.route("/edit_profile", methods=['GET', 'POST'])
+    # The app user has to be logged in to access this edit_profile page
+    @login_required
+    def edit_profile():
+        form = UpdateProfileForm()
+        if form.validate_on_submit():
+            # Saving user's picture
+            if form.picture.data:
+                picture_file = save_picture(form.picture.data)
+                current_user.profile_pic = picture_file
+
+            # Updates current user first and last names
+            #print('Update form validated')
+            current_user.firstname = form.firstname.data
+            current_user.lastname = form.lastname.data
+            current_user.fluent_languages = form.fluent_languages.data
+            current_user.other_languages = form.other_languages.data
+            current_user.interests = form.interests.data
+            db.session.commit()
+            flash('Your profile has been updated', 'success')
+            return redirect(url_for('profile'))
+
+        # Populating the UpdateProfileForm with the current user's details(names) when it validates on submit
+        elif request.method =='GET':
+            form.firstname.data = current_user.firstname
+            form.lastname.data = current_user.lastname
+        profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
+        return render_template('edit_profile.html', title='Edit Profile', profile_pic=profile_pic, form=form)
+
 
     @app.route("/logout")
     def logout():
