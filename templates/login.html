@@ -4,7 +4,7 @@
 {% include 'partials/messages.html'%}
     <!-- Flash message for accounted created -->
     <!-- Login Form -->
-    <div class="container rounded border border-dark border border-1 text-center w-50 my-5 bg-light" >
+    <div class="container rounded border border-dark border border-1 text-center w-50 my-5 bg-light" id="login-form">
         <form class="row" method="POST" action="" novalidate>
             <!-- Adds the CSRF token-->
             {{  form.hidden_tag() }}
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="col-12">
-                {{ form.submit(class="btn btn-dark btn-lg my-3") }}
+                {{ form.submit(class="btn btn-dark btn-lg rounded-pill my-3") }}
             </div>
         </form>
         <div class="border-top pt-3">

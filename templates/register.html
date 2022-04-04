@@ -2,7 +2,7 @@
 {% include '/partials/navbar.html' %}
 {% block body %}
     <!-- Registration Form -->
-    <div class="container rounded border border-dark border border-1 my-4 text-center w-50 bg-light">
+    <div class="container rounded border border-dark border border-1 my-4 text-center w-50 bg-light" id="register-form">
         <form class="row g-3" method="POST" action="" novalidate>
             <!-- Adds the CSRF token-->
             {{  form.hidden_tag() }}
@@ -64,7 +64,28 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="row g-3 mt-3">
+                <div class="row align-items-center g-3 mt-3">
+                    <div class="col-sm-12">
+                        {{ form.lookup_address.label(class="form-control-label") }} 
+                        {% if form.lookup_address.errors %} 
+                            {{ form.lookup_address(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.lookup_address.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                        {% else %} 
+                            {{ form.lookup_address(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row align-items-center g-3 mt-3">
+                    <div id="container" style="width: 600px; height: 300px;">
+                        <!--Google map-->
+                        <div id="map" style="height: 100%;"></div>
+                    </div>
+                </div>
+                <div class="row align-items-center g-3 mt-3">
                     <div class="col-sm-12">
                         {{ form.email.label(class="form-label") }}
                         {% if form.email.errors %}
@@ -108,7 +129,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center g-3 mt-3">
-                    <small class="text-danger">For multiple selection hold the shift key down, whilst you use your mouse to click</small>
+                    <small class="text-primary">For multiple selection hold the Shift/Ctrl key down, whilst you use your mouse to click</small>
                     <div class="col-sm-6">
                         {{ form.fluent_languages.label(class="form-label") }}
                         {% if form.fluent_languages.errors %}
@@ -151,11 +172,23 @@
                 </div>
             </fieldset>
             <div>
-                {{ form.submit(class="btn btn-dark btn-lg my-3") }}
+                {{ form.submit(class="btn btn-dark btn-lg rounded-pill my-3") }}
             </div>
         </form>
     </div>
 {% block footer %}
 {% include 'partials/footer.html' %}
 {% endblock footer %}
+<!-- JQuery and Map scripts  -->
+<script src="{{ url_for('static', filename='register.js') }}"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&callback=initAutocomplete&libraries=places&v=weekly&channel=2"
+  async
+></script>
 {% endblock body %}

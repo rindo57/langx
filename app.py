@@ -6,10 +6,10 @@ import sys
 import tkinter as tk
 from flask import Flask, request, abort, jsonify, render_template, url_for, flash, redirect
 from flask_cors import CORS
-# import jyserver.Flask as jsf  - This import enables HTML DOM
+# import jyserver.Flask as jsf  - This import enables access to the HTML DOM
 import traceback
-from forms import LoginForm, RegistrationForm, UpdateProfileForm
-from models import setup_db, SampleLocation, db_drop_and_create_all,db, AppUser
+from forms import LoginForm, RegistrationForm, UpdateProfileForm, NewLocationForm
+from models import setup_db, SampleLocation, db_drop_and_create_all,db, AppUser, SpatialConstants
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_login import login_user, current_user, logout_user, login_required
@@ -61,7 +61,8 @@ def create_app(test_config=None):
             # create the app user instance
             app_user = AppUser(firstname=form.firstname.data, lastname=form.lastname.data, street=form.street.data, 
             house=form.house.data, fluent_languages=form.fluent_languages.data, other_languages=form.other_languages.data, 
-            email=form.email.data, password=hashed_password, interests=form.interests.data)
+            email=form.email.data, password=hashed_password, interests=form.interests.data,geom=SpatialConstants.point_representation(
+                form.coord_latitude.data,form.coord_longitude.data))
             # add the app user to the database
             #print(app_user)
             db.session.add(app_user)
@@ -69,7 +70,7 @@ def create_app(test_config=None):
             db.session.commit() 
             flash(f'Account created - Welcome to the community {form.firstname.data} {form.lastname.data}!', 'success')
             return redirect(url_for('login'))
-        return render_template('register.html', title='Register', form=form)
+        return render_template('register.html', title='Register', form=form, map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():
@@ -147,6 +148,7 @@ def create_app(test_config=None):
             current_user.fluent_languages = form.fluent_languages.data
             current_user.other_languages = form.other_languages.data
             current_user.interests = form.interests.data
+            current_user.geom = SpatialConstants.point_representation(form.coord_latitude.data,form.coord_longitude.data)
             db.session.commit()
             flash('Your profile has been updated', 'success')
             return redirect(url_for('profile'))
@@ -158,18 +160,40 @@ def create_app(test_config=None):
         profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
         return render_template('edit_profile.html', title='Edit Profile', profile_pic=profile_pic, form=form)
 
-
     @app.route("/logout")
     def logout():
         logout_user()
         return redirect(url_for('home'))
-    
+
     @app.route('/map', methods=['GET'])
     def location():
         return render_template(
             'map.html', 
             map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'), title='Map'
         )
+
+    @app.route("/new-location", methods=['GET', 'POST'])
+    def new_location():
+        form = NewLocationForm()
+        if form.validate_on_submit():            
+            latitude = float(form.coord_latitude.data)
+            longitude = float(form.coord_longitude.data)
+            description = form.description.data
+
+            location = SampleLocation(
+                description=description,
+                geom=SampleLocation.point_representation(latitude=latitude, longitude=longitude)
+            )   
+            location.insert()
+
+            flash(f'New location created!', 'success')
+            return redirect(url_for('news'))
+
+        return render_template(
+            'new_location.html',
+            form=form,
+            map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'), title='New Location'
+        ) 
 
     @app.route("/api/store_item")
     def store_item():

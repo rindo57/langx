@@ -13,24 +13,6 @@ from flask_login import UserMixin
 
 db = SQLAlchemy()
 
-class AppUser(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(10), nullable=False)
-    lastname = db.Column(db.String(10), nullable=False)
-    street = db.Column(db.String(20), nullable=False)
-    house = db.Column(db.Integer, nullable=False)
-    email = db.Column(db.String(50), unique=True, nullable=False)
-    profile_pic = db.Column(db.String(20), nullable=False, default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
-    fluent_languages = db.Column(db.Text, nullable=False)
-    other_languages = db.Column(db.Text, nullable=False)
-    interests = db.Column(db.Text, nullable=False)
-    #languages = db.relationship('Languages', backref='author', lazy=True)
-
-    def __repr__(self):
-        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.street}', '{self.house}', \
-             '{self.fluent_languages}', '{self.other_languages}','{self.profile_pic}', '{self.interests}')"
-
 '''
 setup_db(app):
     binds a flask application and a SQLAlchemy service
@@ -88,6 +70,20 @@ def insert_sample_locations():
 
 class SpatialConstants:
     SRID = 4326
+    @staticmethod
+    def point_representation(latitude, longitude):
+        point = 'POINT(%s %s)' % (longitude, latitude)
+        wkb_element = WKTElement(point, srid=SpatialConstants.SRID)
+        return wkb_element
+    @staticmethod
+    def get_location_latitude(geom):
+        point = to_shape(geom)
+        return point.y
+    @staticmethod
+    def get_location_longitude(geom):
+        point = to_shape(geom)
+        return point.x
+
 class SampleLocation(db.Model):
     __tablename__ = 'sample_locations'
 
@@ -144,4 +140,53 @@ class SampleLocation(db.Model):
         db.session.commit()
 
     def update(self):
-        db.session.commit()         
+        db.session.commit()    
+
+class AppUser(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(10), nullable=False)
+    lastname = db.Column(db.String(10), nullable=False)
+    street = db.Column(db.String(20), nullable=False)
+    house = db.Column(db.Integer, nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    profile_pic = db.Column(db.String(20), nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+    fluent_languages = db.Column(db.Text, nullable=False)
+    other_languages = db.Column(db.Text, nullable=False)
+    interests = db.Column(db.Text, nullable=False)
+    #languages = db.relationship('Languages', backref='author', lazy=True)
+    geom = db.Column(Geometry(geometry_type='POINT', srid=SpatialConstants.SRID))
+
+    def __repr__(self):
+        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.street}', '{self.house}', \
+             '{self.fluent_languages}', '{self.other_languages}','{self.profile_pic}', '{self.interests}')"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'profile_pic':self.profile_pic,
+            'fluent_languages': self.fluent_languages,
+            'interests':self.interests,
+            'location': {
+                'lng': SpatialConstants.get_location_longitude(self.geom),
+                'lat': SpatialConstants.get_location_latitude(self.geom)
+            }
+        }  
+
+    @staticmethod
+    def get_items_within_radius(lat, lng, radius):
+        """Return all sample locations within a given radius (in meters)"""
+
+        #TODO: The arbitrary limit = 100 is just a quick way to make sure 
+        # we won't return tons of entries at once, 
+        # paging needs to be in place for real usecase
+        results = AppUser.query.filter(
+            ST_DWithin(
+                cast(AppUser.geom, Geography),
+                cast(from_shape(Point(lng, lat)), Geography),
+                radius)
+            ).limit(100).all() 
+
+        return [l.to_dict() for l in results]  

@@ -2,7 +2,8 @@ from random import choices
 from flask_wtf import FlaskForm
 #from flask_login import current_user
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, IntegerField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectMultipleField
+from wtforms import StringField, IntegerField, PasswordField, SubmitField, \
+    BooleanField, TextAreaField, SelectMultipleField, HiddenField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from models import AppUser
 
@@ -28,6 +29,9 @@ class RegistrationForm(FlaskForm):
     fluent_languages = SelectMultipleField('Select your native and fluent language(s)', validators=[DataRequired()], choices=options)
     other_languages = SelectMultipleField('Select the language(s) you want to learn', validators=[DataRequired()], choices=options)
     interests = TextAreaField('Describe your Interests and ideal language exchange partner', validators=[DataRequired(), Length(max=300)])
+    lookup_address = StringField('Search address')
+    coord_latitude = HiddenField('Latitude',validators=[DataRequired()])
+    coord_longitude = HiddenField('Longitude', validators=[DataRequired()])
     submit = SubmitField('Confirm Registration')
 
     def validate_email(self, email):
@@ -35,7 +39,7 @@ class RegistrationForm(FlaskForm):
         if app_user:
             raise ValidationError('This email is taken, please select a different one.')
 
-""" Form to Update user profile Info(names, pic, languages and Interests) """   
+""" Form to Update user profile Info """   
 class UpdateProfileForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired(), Length(min=2, max=10)])
     lastname = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=10)]) 
@@ -45,7 +49,21 @@ class UpdateProfileForm(FlaskForm):
     other_languages = SelectMultipleField('Language(s) you want to learn', validators=[DataRequired()], choices=options)
     interests = TextAreaField('Describe your Interests and ideal language exchange partner', validators=[DataRequired(), Length(max=300)])
     picture = FileField('Select a different profile picture',  validators=[FileAllowed(['jpg', 'AVIF'])])
+    lookup_address = StringField('Search address')
+    coord_latitude = HiddenField('Latitude',validators=[DataRequired()])
+    coord_longitude = HiddenField('Longitude', validators=[DataRequired()])
     submit = SubmitField('Update')
+
+class NewLocationForm(FlaskForm):
+    description = StringField('Location description',
+                           validators=[DataRequired(), Length(min=1, max=80)])
+    lookup_address = StringField('Search address')
+
+    coord_latitude = HiddenField('Latitude',validators=[DataRequired()])
+
+    coord_longitude = HiddenField('Longitude', validators=[DataRequired()])                    
+
+    submit = SubmitField('Create Location')
 
 
 

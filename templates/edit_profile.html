@@ -2,7 +2,7 @@
 {% block body %}
 {% include 'partials/navbar.html'%}
     <!-- Form to update profile info -->
-    <div class="container rounded border border-dark border border-1 my-4 text-center w-50 bg-light">
+    <div class="container rounded border border-dark border border-1 my-4 text-center w-50 bg-light" id="edit-form">
         <!-- Add the special encoding type to the form element in order for image data to be passed properly -->
         <form class="row g-3" method="POST" action="" enctype="multipart/form-data" novalidate>
             <!-- Adds the CSRF token-->
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center g-3 mt-3">
-                    <small class="text-danger">For multiple selection hold the shift key down, whilst you use your mouse to click</small>
+                    <small class="text-primary">For multiple selection hold the Shift/Ctrl key down, whilst you use your mouse to click</small>
                     <div class="col-sm-6">
                         {{ form.fluent_languages.label(class="form-label") }}
                         {% if form.fluent_languages.errors %}
@@ -92,7 +92,7 @@
                 </div>
             </fieldset>
             <div>
-                {{ form.submit(class="btn btn-dark btn-lg my-3") }}
+                {{ form.submit(class="btn btn-dark btn-lg rounded-pill my-3") }}
             </div>
         </form>
     </div>

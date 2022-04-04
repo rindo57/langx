@@ -6,11 +6,19 @@
   <script src="{{ url_for('static', filename='map.js') }}"></script>
 </head>
 <body>
+  {% extends 'base.html' %}
+  {% block body %}
+  {% include 'partials/navbar.html'%}
+    <a href="{{ url_for('new_location') }}">New Location</a>
     <!--Sometimes the google map will not render / the page is blank. Giving the map div a height prop and putting it 
         inside another HTML element with fixed size prevents that -->
-    <div id="conainer" style="width: 600px; height: 600px;">
+    <!-- <div id="conainer" style="width: 600px; height: 600px;"> -->
         <!--Google map-->
-        <div id="map" style="height: 100%;"></div>
+        <!--<div id="map" style="height: 100%;"></div>
+    </div>-->
+    <div id="conainer" style="width: 600px; height: 600px;">
+      <!--Google map-->
+      <div id="map" style="height: 100%;"></div>
     </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
@@ -18,5 +26,9 @@
       src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&callback=initMap&libraries=geometry&v=weekly"
       async
     ></script>
+  {% block footer %}
+  {% include 'partials/footer.html' %}
+  {% endblock footer %}
+  {% endblock body %}
 </body>
 </html>
