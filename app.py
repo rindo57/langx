@@ -3,7 +3,6 @@ import secrets
 from turtle import title
 from PIL import Image
 import sys
-import tkinter as tk
 from flask import Flask, request, abort, jsonify, render_template, url_for, flash, redirect
 from flask_cors import CORS
 # import jyserver.Flask as jsf  - This import enables access to the HTML DOM
