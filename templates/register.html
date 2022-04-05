@@ -64,9 +64,9 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="row align-items-center g-3 mt-3">
+                <div class="row align-items-center g-3 mt-1">
                     <div class="col-sm-12">
-                        {{ form.lookup_address.label(class="form-control-label") }} 
+                        {{ form.lookup_address.label(class="form-label") }} 
                         {% if form.lookup_address.errors %} 
                             {{ form.lookup_address(class="form-control is-invalid") }}
                                 <div class="invalid-feedback">
@@ -79,8 +79,8 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="row align-items-center g-3 mt-3">
-                    <div id="container" style="width: 600px; height: 300px;">
+                <div class="row align-items-center g-3 mt-1">
+                    <div id="container" style="width: 620px; height: 300px;">
                         <!--Google map-->
                         <div id="map" style="height: 100%;"></div>
                     </div>

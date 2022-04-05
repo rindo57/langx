@@ -1,18 +1,16 @@
 import os
-import secrets
-from turtle import title
-from PIL import Image
 import sys
+import secrets
+from PIL import Image
 from flask import Flask, request, abort, jsonify, render_template, url_for, flash, redirect
 from flask_cors import CORS
-# import jyserver.Flask as jsf  - This import enables access to the HTML DOM
 import traceback
 from forms import LoginForm, RegistrationForm, UpdateProfileForm, NewLocationForm
-from models import setup_db, SampleLocation, db_drop_and_create_all,db, AppUser, SpatialConstants
+from models import setup_db, SampleLocation, db_drop_and_create_all, db, AppUser, SpatialConstants
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_login import login_user, current_user, logout_user, login_required
-
+# import jyserver.Flask as jsf  - This import enables access to the HTML DOM
 
 def create_app(test_config=None):
     # create and configure the app
@@ -58,18 +56,24 @@ def create_app(test_config=None):
         if form.validate_on_submit():
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             # create the app user instance
-            app_user = AppUser(firstname=form.firstname.data, lastname=form.lastname.data, street=form.street.data, 
-            house=form.house.data, fluent_languages=form.fluent_languages.data, other_languages=form.other_languages.data, 
-            email=form.email.data, password=hashed_password, interests=form.interests.data,geom=SpatialConstants.point_representation(
-                form.coord_latitude.data,form.coord_longitude.data))
+            app_user = AppUser(firstname=form.firstname.data, 
+            lastname=form.lastname.data, street=form.street.data, 
+            house=form.house.data, fluent_languages=form.fluent_languages.data, 
+            other_languages=form.other_languages.data, 
+            email=form.email.data, password=hashed_password, 
+            interests=form.interests.data,geom=SpatialConstants.point_representation(
+            form.coord_latitude.data,form.coord_longitude.data))
             # add the app user to the database
             #print(app_user)
+            print(app_user.fluent_languages)
+            print(type(app_user.fluent_languages))
             db.session.add(app_user)
             # commit the change - now the user can log in
             db.session.commit() 
             flash(f'Account created - Welcome to the community {form.firstname.data} {form.lastname.data}!', 'success')
             return redirect(url_for('login'))
-        return render_template('register.html', title='Register', form=form, map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
+        return render_template('register.html', title='Register', form=form, 
+        map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():
@@ -93,7 +97,7 @@ def create_app(test_config=None):
                 next_page code which will redirect the user to the page they were trying to access after logging 
                 in instead of the home page'''
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('home'))
+                return redirect(next_page) if next_page else redirect(url_for('news'))
             else:
                 #print('Failed flash message - auth failed')
                 flash('Login unsuccessful, please check your email and password', 'danger')
@@ -104,9 +108,10 @@ def create_app(test_config=None):
     @login_required
     def profile():
         profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
-        return render_template('profile.html', title='Profile', profile_pic = profile_pic)
+        return render_template('profile.html', title='Profile', profile_pic = profile_pic, 
+        map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
 
-    @app.route("/news", methods=['GET', 'POST'])
+    @app.route("/news", methods=['GET'])
     @login_required
     def news():
         return render_template('news.html', title='Top News')
@@ -147,7 +152,8 @@ def create_app(test_config=None):
             current_user.fluent_languages = form.fluent_languages.data
             current_user.other_languages = form.other_languages.data
             current_user.interests = form.interests.data
-            current_user.geom = SpatialConstants.point_representation(form.coord_latitude.data,form.coord_longitude.data)
+            current_user.coord_latitude = form.coord_latitude.data
+            current_user.coord_longitude = form.coord_longitude.data
             db.session.commit()
             flash('Your profile has been updated', 'success')
             return redirect(url_for('profile'))
@@ -156,8 +162,11 @@ def create_app(test_config=None):
         elif request.method =='GET':
             form.firstname.data = current_user.firstname
             form.lastname.data = current_user.lastname
+            #form.street.data = current_user.street
+            #form.house.data = current_user.house
         profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
-        return render_template('edit_profile.html', title='Edit Profile', profile_pic=profile_pic, form=form)
+        return render_template('edit_profile.html', title='Edit Profile', profile_pic=profile_pic, form=form,
+        map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
 
     @app.route("/logout")
     def logout():

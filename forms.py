@@ -48,7 +48,7 @@ class UpdateProfileForm(FlaskForm):
     fluent_languages = SelectMultipleField('Your native and fluent language(s)', validators=[DataRequired()], choices=options)
     other_languages = SelectMultipleField('Language(s) you want to learn', validators=[DataRequired()], choices=options)
     interests = TextAreaField('Describe your Interests and ideal language exchange partner', validators=[DataRequired(), Length(max=300)])
-    picture = FileField('Select a different profile picture',  validators=[FileAllowed(['jpg', 'AVIF'])])
+    picture = FileField('Upload profile picture',  validators=[FileAllowed(['jpg', 'AVIF'])])
     lookup_address = StringField('Search address')
     coord_latitude = HiddenField('Latitude',validators=[DataRequired()])
     coord_longitude = HiddenField('Longitude', validators=[DataRequired()])

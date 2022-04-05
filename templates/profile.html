@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
-{% block body %}
 {% include 'partials/navbar.html'%}
 {% include 'partials/messages.html'%}
+{% block body %}
     <!-- Flash message for updated profile -->
     <!-- Profile section - Horizontal Cards -->
     <div class="container-fluid d-flex justify-content-center">
-        <div class="card my-3 text-dark bg-light border-dark" style="max-width: 700px;"  id="box-shadow2">
+        <div class="card my-3 text-dark bg-light border-dark" style="max-width: 810px;"  id="box-shadow2">
             <div class="row g-0">
               <div class="col-sm-5">
                 <!--App User's Profile Picture -->
-                <img src="{{ profile_pic }}" class="img-fluid img-thumbnail mt-3" alt="User profile picture">
+                <img src="{{ profile_pic }}" class="img-fluid img-thumbnail" alt="User profile picture">
                 <div class="text-center">
                     <a class="btn btn-outline-dark rounded-pill text-center my-2" href="{{'edit_profile'}}" role="button">Edit Profile <i class="fa-solid fa-pen"></i></a>
                 </div>
@@ -18,25 +18,44 @@
                 <div class="card-body">
                     <!-- Form Details Here -->
                     <h5 class="card-title">{{current_user.firstname}} {{ current_user.lastname }}</h5>
-                    <h6 class="card-subtitle my-3"><i class="fa-solid fa-location-dot"></i> {{ current_user.street}} {{ current_user.house }}</h6> <!--location-->
-                    <p class="card-text"><i class="fa-solid fa-language"></i> Speaks {{ current_user.fluent_languages }} </p> <!--user's languages-->
-                    <p class="card-text"><i class="fa-brands fa-leanpub"></i> Wants to learn {{ current_user.other_languages }}</p> <!--langs to learn -->
-                    <p class="card-text"><i class="fa-solid fa-network-wired"></i> {{ current_user.interests }}</p><!--Interests-->
+                    <!-- location -->
+                    <h6 class="card-subtitle my-3"><i class="fa-solid fa-location-dot"></i> {{ current_user.street}} {{ current_user.house }}</h6> 
+                    <!-- user's languages-->
+                    <p class="card-text"><i class="fa-solid fa-language"></i> Speaks: {{ current_user.fluent_languages.strip() }}</p>
+                    <!-- languages to learn -->
+                    <p class="card-text"><i class="fa-brands fa-leanpub"></i> Wants to learn: {{ current_user.other_languages }}</p> 
+                    <!-- About User -->
+                    <p class="card-text"><i class="fa-solid fa-network-wired"></i> About Me: {{ current_user.interests }}</p>
                 </div>
               </div>
             </div>
         </div>
     </div>
     <div class="container d-flex justify-content-center mb-3">
-        <div class="card text-dark bg-light border-dark" style="width: 28rem;">
+        <div class="card text-dark bg-light border-dark" style="width: 40rem;">
             <div class="card-body">
-                <h5 class="card-title">Map</h5>
+                <!-- <h5 class="card-title">Map</h5> -->
                 <!-- Insert the map and delete the header-->
-                <p>Map content here</p>
+                <div id="container" style="width: 38rem; height: 26rem;">
+                    <!--Google map-->
+                    <div id="map" style="height: 100%;"></div>
+                </div>
             </div>
         </div>
     </div>
 {% block footer %}
 {% include 'partials/footer.html' %}
 {% endblock footer %}
+<!-- JQuery and Map scripts  -->
+<script src="{{ url_for('static', filename='register.js') }}"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&callback=initAutocomplete&libraries=places&v=weekly&channel=2"
+  async
+></script>
 {% endblock body %}
