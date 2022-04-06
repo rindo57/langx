@@ -1,12 +1,18 @@
 body {
     margin: 0;
-    padding-top: 67px; /*prevents the fixed-top class of the navbar from overlapping with the body content*/
+    /*prevents the fixed-top class of the navbar from overlapping with the body content*/
+    padding-top: 67px; 
     background-color: white;
+    /* Include the viewport height, positioning of the footer will be relative to it*/
+    min-height: 100vh;
+    /* The value of this property is equal to - 324px which is the height of the footer*/
+    padding-bottom: 324px; 
+    position: relative; /* Footer is positioned absolute relative to the body*/
 }
 
 #homePagePic {
     background-image: url(https://res.cloudinary.com/dxxysm630/image/upload/v1647447728/Language3_gxr2i4.jpg);
-    height:75vh;
+    height:60vh;
     background-repeat: no-repeat;
     background-size: cover;
     opacity: 100%;
@@ -17,19 +23,11 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-.card-link {
-    text-decoration: none;
-}
+hr {border-top: 2px solid rgb(48, 47, 3);}
 
-hr {
-    border-top: 2px solid rgb(48, 47, 3);
-}
-
-.form-check .form-check-input {
-    float: none;
-}
+.form-check .form-check-input {float: none;}
 
 footer {
-    position: relative;
+    position: absolute;
     bottom: 0;
 }

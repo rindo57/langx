@@ -168,6 +168,7 @@ class AppUser(db.Model, UserMixin):
             'lastname': self.lastname,
             'profile_pic':self.profile_pic,
             'fluent_languages': self.fluent_languages,
+            'other_languages': self.other_languages,
             'interests':self.interests,
             'location': {
                 'lng': SpatialConstants.get_location_longitude(self.geom),

@@ -61,12 +61,13 @@ def create_app(test_config=None):
             house=form.house.data, fluent_languages=form.fluent_languages.data, 
             other_languages=form.other_languages.data, 
             email=form.email.data, password=hashed_password, 
-            interests=form.interests.data,geom=SpatialConstants.point_representation(
+            interests=form.interests.data,
+            geom=SpatialConstants.point_representation(
             form.coord_latitude.data,form.coord_longitude.data))
             # add the app user to the database
             #print(app_user)
-            print(app_user.fluent_languages)
-            print(type(app_user.fluent_languages))
+            #print(app_user.fluent_languages)
+            #print(type(app_user.fluent_languages))
             db.session.add(app_user)
             # commit the change - now the user can log in
             db.session.commit() 
@@ -87,7 +88,7 @@ def create_app(test_config=None):
             # checking if credentials used exist in the db
             #print(app_user)
             if app_user and bcrypt.check_password_hash(app_user.password, form.password.data):
-                print("There's a password match")
+                #print("There's a password match")
                 login_user(app_user, remember=form.remember_user.data)
                 '''The aim here is to access the query paramater(next?%profile) after login if it exists
                 Initially when trying to access the profile page without logging in the user was redirected
@@ -165,7 +166,8 @@ def create_app(test_config=None):
             #form.street.data = current_user.street
             #form.house.data = current_user.house
         profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
-        return render_template('edit_profile.html', title='Edit Profile', profile_pic=profile_pic, form=form,
+        return render_template('edit_profile.html', title='Edit Profile', 
+        profile_pic=profile_pic, form=form,
         map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
 
     @app.route("/logout")
