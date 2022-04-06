@@ -1,6 +1,6 @@
 venv
 __pycache__
-API_KEY
+API_KEY.txt
 new_location.html
 test_code.py
 home.js
