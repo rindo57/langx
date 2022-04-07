@@ -42,28 +42,28 @@ def db_drop_and_create_all():
 
 def insert_sample_locations():
     loc1 = SampleLocation(
-        description='Brandenburger Tor',
+        description='Messehallen',
         geom=SampleLocation.point_representation(
-            latitude=52.516247, 
-            longitude=13.377711
+            latitude=53.5572, 
+            longitude=9.9774
         )
     )
     loc1.insert()
 
     loc2 = SampleLocation(
-        description='Schloss Charlottenburg',
+        description='Planten un Blomen',
         geom=SampleLocation.point_representation(
-            latitude=52.520608, 
-            longitude=13.295581
+            latitude=53.5602, 
+            longitude=9.9822
         )
     )
     loc2.insert()
 
     loc3 = SampleLocation(
-        description='Tempelhofer Feld',
+        description='HafenCity',
         geom=SampleLocation.point_representation(
-            latitude=52.473580, 
-            longitude=13.405252
+            latitude=53.5395, 
+            longitude=10.0051
         )
     )
     loc3.insert()
@@ -140,25 +140,25 @@ class SampleLocation(db.Model):
         db.session.commit()
 
     def update(self):
-        db.session.commit()    
+        db.session.commit()  
+
+# My project Model  
 
 class AppUser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(10), nullable=False)
     lastname = db.Column(db.String(10), nullable=False)
-    street = db.Column(db.String(20), nullable=False)
-    house = db.Column(db.Integer, nullable=False)
+    lookup_address = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
     profile_pic = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    fluent_languages = db.Column(db.String(200), nullable=False)
-    other_languages = db.Column(db.String(200), nullable=False)
+    fluent_languages = db.Column(db.String(200), nullable=False) # try array instead of string https://docs.sqlalchemy.org/en/14/core/type_basics.html#sqlalchemy.types.ARRAY
+    other_languages = db.Column(db.String(200), nullable=False) # Or use a replace method before storing the data
     interests = db.Column(db.Text, nullable=False)
-    #languages = db.relationship('Languages', backref='author', lazy=True)
     geom = db.Column(Geometry(geometry_type='POINT', srid=SpatialConstants.SRID))
 
     def __repr__(self):
-        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.street}', '{self.house}', \
+        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.lookup_address}, \
              '{self.fluent_languages}', '{self.other_languages}','{self.profile_pic}', '{self.interests}')"
 
     def to_dict(self):

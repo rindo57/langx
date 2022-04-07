@@ -19,9 +19,9 @@
                     <!-- Form Details Here -->
                     <h5 class="card-title">{{current_user.firstname}} {{ current_user.lastname }}</h5>
                     <!-- location -->
-                    <h6 class="card-subtitle my-3"><i class="fa-solid fa-location-dot"></i> {{ current_user.street}} {{ current_user.house }}</h6> 
+                    <h6 class="card-subtitle my-3"><i class="fa-solid fa-location-dot"></i> {{ current_user.lookup_address }}</h6> 
                     <!-- user's languages-->
-                    <p class="card-text"><i class="fa-solid fa-language"></i> Speaks: {{ current_user.fluent_languages.strip() }}</p>
+                    <p class="card-text"><i class="fa-solid fa-language"></i> Speaks: {{ current_user.fluent_languages }}</p>
                     <!-- languages to learn -->
                     <p class="card-text"><i class="fa-brands fa-leanpub"></i> Wants to learn: {{ current_user.other_languages }}</p> 
                     <!-- About User -->
@@ -47,7 +47,7 @@
 {% include 'partials/footer.html' %}
 {% endblock footer %}
 <!-- JQuery and Map scripts  -->
-<script src="{{ url_for('static', filename='register.js') }}"></script>
+<script src="{{ url_for('static', filename='map.js') }}"></script>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
   integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
@@ -55,7 +55,7 @@
   referrerpolicy="no-referrer"
 ></script>
 <script
-  src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&callback=initAutocomplete&libraries=places&v=weekly&channel=2"
+  src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&callback=initMap&libraries=geometry&v=weekly&channel=2"
   async
 ></script>
 {% endblock body %}

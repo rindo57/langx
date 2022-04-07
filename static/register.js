@@ -3,7 +3,7 @@ let map = null;
 
 function initAutocomplete() {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 52.52, lng: 13.405 }, //We start at the center of Berlin
+    center: { lat: 53.5511, lng: 9.9937 }, //We start at the center of Hamburg City
     zoom: 13,
     mapTypeId: "roadmap",
   });

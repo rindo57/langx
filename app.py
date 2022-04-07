@@ -57,17 +57,19 @@ def create_app(test_config=None):
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
             # create the app user instance
             app_user = AppUser(firstname=form.firstname.data, 
-            lastname=form.lastname.data, street=form.street.data, 
-            house=form.house.data, fluent_languages=form.fluent_languages.data, 
-            other_languages=form.other_languages.data, 
-            email=form.email.data, password=hashed_password, 
+            lastname=form.lastname.data,  
+            lookup_address = form.lookup_address.data,
+            fluent_languages=', '.join(form.fluent_languages.data), 
+            other_languages=', '.join(form.other_languages.data), 
+            email=form.email.data, 
+            password=hashed_password, 
             interests=form.interests.data,
             geom=SpatialConstants.point_representation(
             form.coord_latitude.data,form.coord_longitude.data))
             # add the app user to the database
-            #print(app_user)
-            #print(app_user.fluent_languages)
-            #print(type(app_user.fluent_languages))
+            print(app_user)
+            print(app_user.fluent_languages)
+            print(type(app_user.fluent_languages))
             db.session.add(app_user)
             # commit the change - now the user can log in
             db.session.commit() 
@@ -150,25 +152,39 @@ def create_app(test_config=None):
             #print('Update form validated')
             current_user.firstname = form.firstname.data
             current_user.lastname = form.lastname.data
-            current_user.fluent_languages = form.fluent_languages.data
-            current_user.other_languages = form.other_languages.data
+            current_user.fluent_languages = ', '.join(form.fluent_languages.data)
+            current_user.other_languages = ', '.join(form.other_languages.data)
             current_user.interests = form.interests.data
+            current_user.lookup_address = form.lookup_address.data
             current_user.coord_latitude = form.coord_latitude.data
             current_user.coord_longitude = form.coord_longitude.data
             db.session.commit()
             flash('Your profile has been updated', 'success')
             return redirect(url_for('profile'))
 
-        # Populating the UpdateProfileForm with the current user's details(names) when it validates on submit
+        # Populating the UpdateProfileForm with the current user's registered details when it validates on submit
         elif request.method =='GET':
             form.firstname.data = current_user.firstname
             form.lastname.data = current_user.lastname
-            #form.street.data = current_user.street
-            #form.house.data = current_user.house
+            form.interests.data = current_user.interests
+            form.lookup_address.data = current_user.lookup_address
+            form.fluent_languages.data = current_user.fluent_languages
+            form.other_languages.data = current_user.other_languages
+
         profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
         return render_template('edit_profile.html', title='Edit Profile', 
         profile_pic=profile_pic, form=form,
         map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
+
+    @app.route('/detail', methods=['GET'])
+    def detail():
+        location_id = float(request.args.get('id'))
+        item = SampleLocation.query.get(location_id)
+        return render_template(
+            'detail.html', 
+            item=item,
+            map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!')
+        ) 
 
     @app.route("/logout")
     def logout():
@@ -236,7 +252,7 @@ def create_app(test_config=None):
             longitude = float(request.args.get('lng'))
             radius = int(request.args.get('radius'))
             
-            locations = SampleLocation.get_items_within_radius(latitude, longitude, radius)
+            locations = AppUser.get_items_within_radius(latitude, longitude, radius)
             return jsonify(
                 {
                     "success": True,
