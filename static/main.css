@@ -37,3 +37,7 @@ footer {
     position: absolute;
     bottom: 0;
 }
+
+#terms:hover > a {
+   color: yellow;
+}

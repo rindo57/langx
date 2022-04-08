@@ -42,28 +42,28 @@ def db_drop_and_create_all():
 
 def insert_sample_locations():
     loc1 = SampleLocation(
-        description='Messehallen',
+        description='Osterbrook 5',
         geom=SampleLocation.point_representation(
-            latitude=53.5572, 
-            longitude=9.9774
+            latitude=53.550552, 
+            longitude=10.057432
         )
     )
     loc1.insert()
 
     loc2 = SampleLocation(
-        description='Planten un Blomen',
+        description='Schadesweg 10',
         geom=SampleLocation.point_representation(
-            latitude=53.5602, 
-            longitude=9.9822
+            latitude=53.546873, 
+            longitude=10.05178
         )
     )
     loc2.insert()
 
     loc3 = SampleLocation(
-        description='HafenCity',
+        description='Bei der Hammer Kirche 3',
         geom=SampleLocation.point_representation(
-            latitude=53.5395, 
-            longitude=10.0051
+            latitude=49.852851, 
+            longitude=12.109204
         )
     )
     loc3.insert()
@@ -129,7 +129,9 @@ class SampleLocation(db.Model):
                 'lng': self.get_location_longitude(),
                 'lat': self.get_location_latitude()
             }
-        }    
+        }
+
+    # Fetching nearest users profile
 
     def insert(self):
         db.session.add(self)
