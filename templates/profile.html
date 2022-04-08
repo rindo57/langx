@@ -9,7 +9,7 @@
             <div class="row g-0">
               <div class="col-sm-5">
                 <!--App User's Profile Picture -->
-                <img src="{{ profile_pic }}" class="img-fluid img-thumbnail" alt="User profile picture">
+                <img src="{{ profile_pic }}" class="img-fluid img-thumbnail" alt="App User profile picture">
                 <div class="text-center">
                     <a class="btn btn-outline-dark rounded-pill text-center my-2" href="{{'edit_profile'}}" role="button">Edit Profile <i class="fa-solid fa-pen"></i></a>
                 </div>
@@ -17,15 +17,15 @@
               <div class="col-sm-7">
                 <div class="card-body">
                     <!-- Form Details Here -->
-                    <h5 class="card-title">{{current_user.firstname}} {{ current_user.lastname }}</h5>
+                    <h5 class="card-title">{{profile.firstname}} {{ profile.lastname }}</h5>
                     <!-- location -->
-                    <h6 class="card-subtitle my-3"><i class="fa-solid fa-location-dot"></i> {{ current_user.lookup_address }}</h6> 
+                    <h6 class="card-subtitle my-3"><i class="fa-solid fa-location-dot"></i> {{ profile.lookup_address }}</h6> 
                     <!-- user's languages-->
-                    <p class="card-text"><i class="fa-solid fa-language"></i> Speaks: {{ current_user.fluent_languages }}</p>
+                    <p class="card-text"><i class="fa-solid fa-language"></i> Speaks: {{ profile.fluent_languages }}</p>
                     <!-- languages to learn -->
-                    <p class="card-text"><i class="fa-brands fa-leanpub"></i> Wants to learn: {{ current_user.other_languages }}</p> 
+                    <p class="card-text"><i class="fa-brands fa-leanpub"></i> Wants to learn: {{ profile.other_languages }}</p> 
                     <!-- About User -->
-                    <p class="card-text"><i class="fa-solid fa-network-wired"></i> About Me: {{ current_user.interests }}</p>
+                    <p class="card-text"><i class="fa-solid fa-network-wired"></i> About Me: {{ profile.interests }}</p>
                 </div>
               </div>
             </div>

@@ -11,8 +11,8 @@ body {
 }
 
 #homePagePic {
-    background-image: url(https://res.cloudinary.com/dxxysm630/image/upload/v1647447728/Language3_gxr2i4.jpg);
-    height:60vh;
+    background-image: url(https://res.cloudinary.com/dxxysm630/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1647279704/Language_bkiru2.jpg);
+    height: 75vh;
     background-repeat: no-repeat;
     background-size: cover;
     opacity: 100%;
@@ -23,21 +23,13 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-hr {border-top: 2px solid rgb(48, 47, 3);}
+hr {border-top: 2px solid rgb(12, 12, 2);}
 
 .form-check .form-check-input {float: none;}
-
-@media screen and (max-width: 728px) { 
-    #register-form {
-        width: 100%;
-    }
-}
 
 footer {
     position: absolute;
     bottom: 0;
 }
 
-#terms:hover > a {
-   color: yellow;
-}
+#social-media a {border-radius: 50%;}

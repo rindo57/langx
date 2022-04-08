@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
+<!--Main CSS -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 {% block body %}
 {% include '/partials/navbar.html' %}
 {% include 'partials/messages.html'%}
     <!-- Registration Form -->
-    <div class="container rounded border border-dark border border-1 my-4 text-center bg-light w-50" id="register-form">
+    <div class="container rounded border border-dark border border-1 my-4 text-center bg-light" id="register-form">
         <form class="row g-3" method="POST" action="" novalidate>
             <!-- Adds the CSRF token-->
             {{  form.hidden_tag() }}

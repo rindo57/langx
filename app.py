@@ -110,9 +110,14 @@ def create_app(test_config=None):
     # The app user has to be logged in to access this profile page
     @login_required
     def profile():
+        profile= current_user
+        if request.args.get('id'):
+            user_id = int(request.args.get('id'))
+            user = AppUser.query.get(user_id)
+            profile= user   
         profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
         return render_template('profile.html', title='Profile', profile_pic = profile_pic, 
-        map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
+        profile=profile, map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
 
     @app.route("/news", methods=['GET'])
     @login_required
@@ -152,9 +157,12 @@ def create_app(test_config=None):
             #print('Update form validated')
             current_user.firstname = form.firstname.data
             current_user.lastname = form.lastname.data
+
+            # Converting the languages list to strings using the join method
             current_user.fluent_languages = ', '.join(form.fluent_languages.data)
             current_user.other_languages = ', '.join(form.other_languages.data)
             current_user.interests = form.interests.data
+
             current_user.lookup_address = form.lookup_address.data
             current_user.coord_latitude = form.coord_latitude.data
             current_user.coord_longitude = form.coord_longitude.data

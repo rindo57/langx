@@ -249,7 +249,11 @@ function markerClick(marker) {
   // Show popup for the clicked marker
   selectedMarkerPopup = new Popup(
     selectedMarker.position,
-    "<a href='/detail?id="+selectedMarker.profile.id + "'>" +selectedMarker.profile.description + "</a>"
+    "<a href='/profile?id= " +
+    selectedMarker.profile.id + "'>" + 
+    selectedMarker.profile.firstname + " " + 
+    selectedMarker.profile.lastname +
+    "</a>"
   );
   selectedMarkerPopup.setMap(map);
 }
