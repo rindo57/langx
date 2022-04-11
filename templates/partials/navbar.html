@@ -16,7 +16,11 @@
                             <a class="nav-item nav-link fs-6 fw-bold active" href="{{ url_for('profile') }}"><i class="fa-solid fa-user-check"></i> Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-item nav-link fs-6 fw-bold active text-warning" href="{{ url_for('news') }}"><i class="fa-solid fa-bullhorn"></i> News</a>
+                            <a class="nav-item btn btn-warning btn btn-sm fs-6 fw-bold active position-relative" role="button" href="{{ url_for('news') }}"><i class="fa-solid fa-bullhorn"></i> News
+                                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                    <span class="visually-hidden">New alerts</span>
+                                </span>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-item nav-link fs-6 fw-bold active" href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>

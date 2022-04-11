@@ -144,7 +144,7 @@ class SampleLocation(db.Model):
     def update(self):
         db.session.commit()  
 
-# My project Model  
+# My project App user Model  
 
 class AppUser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -154,8 +154,8 @@ class AppUser(db.Model, UserMixin):
     email = db.Column(db.String(50), unique=True, nullable=False)
     profile_pic = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    fluent_languages = db.Column(db.String(200), nullable=False) # try array instead of string https://docs.sqlalchemy.org/en/14/core/type_basics.html#sqlalchemy.types.ARRAY
-    other_languages = db.Column(db.String(200), nullable=False) # Or use a replace method before storing the data
+    fluent_languages = db.Column(db.String(200), nullable=False)
+    other_languages = db.Column(db.String(200), nullable=False)
     interests = db.Column(db.Text, nullable=False)
     geom = db.Column(Geometry(geometry_type='POINT', srid=SpatialConstants.SRID))
 

@@ -5,14 +5,14 @@
 {% include '/partials/navbar.html' %}
 {% include 'partials/messages.html'%}
     <!-- Registration Form -->
-    <div class="container rounded border border-dark border border-1 my-4 text-center bg-light" id="register-form">
+    <div class="container rounded border border-dark border border-1 text-center bg-light mt-5" id="register-form">
         <form class="row g-3" method="POST" action="" novalidate>
             <!-- Adds the CSRF token-->
             {{  form.hidden_tag() }}
             <fieldset>
                 <legend class="fw-bold my-3 border-bottom">Join Our Community</legend>
                 <div class="row align-items-center g-3 mt-3">
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         {{ form.firstname.label(class="form-label") }}
                         {% if form.firstname.errors %}
                             {{ form.firstname(class="form-control is-invalid") }}
@@ -25,7 +25,7 @@
                             {{ form.firstname(class="form-control") }}
                         {% endif %}
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         {{ form.lastname.label(class="form-label") }}
                         {% if form.lastname.errors %}
                             {{ form.lastname(class="form-control is-invalid") }}
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center g-3 mt-1">
-                    <div class="col-sm-12">
+                    <div class="col-md-12">
                         {{ form.lookup_address.label(class="form-label fw-bold") }} 
                         {% if form.lookup_address.errors %} 
                             {{ form.lookup_address(class="form-control is-invalid") }}
@@ -60,7 +60,7 @@
                     </div>
                 </div> 
                 <div class="row align-items-center g-3 mt-3">
-                    <div class="col-sm-12">
+                    <div class="col-md-12">
                         {{ form.email.label(class="form-label") }}
                         {% if form.email.errors %}
                             {{ form.email(class="form-control is-invalid") }}
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center g-3 mt-3">
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         {{ form.password.label(class="form-label") }}
                         {% if form.password.errors %}
                             {{ form.password(class="form-control is-invalid") }}
@@ -88,7 +88,7 @@
                             {{ form.password(class="form-control") }}
                         {% endif %}
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         {{ form.repeat_password.label(class="form-label") }}
                         {% if form.repeat_password.errors %}
                             {{ form.repeat_password(class="form-control is-invalid") }}
@@ -104,7 +104,7 @@
                 </div>
                 <div class="row align-items-center g-3 mt-3">
                     <small class="text-primary">For multiple selection hold the Shift/Ctrl key down, whilst you use your mouse to click</small>
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         {{ form.fluent_languages.label(class="form-label") }}
                         {% if form.fluent_languages.errors %}
                             {{ form.fluent_languages(class="form-control is-invalid") }}
@@ -117,7 +117,7 @@
                             {{ form.fluent_languages(class="form-control") }}
                         {% endif %}
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         {{ form.other_languages.label(class="form-label") }}
                         {% if form.other_languages.errors %}
                             {{ form.other_languages(class="form-control is-invalid") }}
@@ -131,7 +131,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="row-8 mt-3">
+                <div class="row mt-3">
                     {{ form.interests.label(class="form-label") }}
                     {% if form.interests.errors %}
                         {{ form.interests(class="form-control is-invalid") }}

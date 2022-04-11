@@ -6,7 +6,7 @@
   left: 0;
   transform: translate(-50%, -100%);
   /* Style the bubble. */
-  background-color: white;
+  background-color: rgb(241, 226, 241);
   padding: 5px;
   border-radius: 5px;
   font-family: sans-serif;
@@ -38,7 +38,7 @@
   /* The tip is 8px high, and 12px wide. */
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 8px solid white;
+  border-top: 8px solid purple;
 }
 
 /* JavaScript will position this div at the bottom of the popup tip. */

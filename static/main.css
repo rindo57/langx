@@ -2,7 +2,7 @@ body {
     margin: 0;
     /*prevents the fixed-top class of the navbar from overlapping with the body content*/
     padding-top: 67px; 
-    background-color: white;
+    background-color: whitesmoke;
     /* Include the viewport height, positioning of the footer will be relative to it*/
     min-height: 100vh;
     /* The value of this property is equal to - 324px which is the height of the footer*/
@@ -23,9 +23,24 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-hr {border-top: 2px solid rgb(12, 12, 2);}
+hr {border: 1px solid rgb(12, 12, 2);}
 
 .form-check .form-check-input {float: none;}
+
+#register-form {
+    max-width: 800px;
+    margin: auto;
+}
+
+#login-form {
+    max-width: 600px;
+    margin: auto;
+}
+
+#edit-form {
+    max-width: 800px;
+    margin: auto;
+}
 
 footer {
     position: absolute;

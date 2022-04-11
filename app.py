@@ -67,9 +67,9 @@ def create_app(test_config=None):
             geom=SpatialConstants.point_representation(
             form.coord_latitude.data,form.coord_longitude.data))
             # add the app user to the database
-            print(app_user)
-            print(app_user.fluent_languages)
-            print(type(app_user.fluent_languages))
+            #print(app_user)
+            #print(app_user.fluent_languages)
+            #print(type(app_user.fluent_languages))
             db.session.add(app_user)
             # commit the change - now the user can log in
             db.session.commit() 
@@ -82,7 +82,7 @@ def create_app(test_config=None):
     def login():
         #print("Login info", flush=True)
         if current_user.is_authenticated:
-            return redirect(url_for('news'))
+            return redirect(url_for('profile'))
         form = LoginForm()
         if form.validate_on_submit():
             #print('form validated')
@@ -100,7 +100,7 @@ def create_app(test_config=None):
                 next_page code which will redirect the user to the page they were trying to access after logging 
                 in instead of the home page'''
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('news'))
+                return redirect(next_page) if next_page else redirect(url_for('profile'))
             else:
                 #print('Failed flash message - auth failed')
                 flash('Login unsuccessful, please check your email and password', 'danger')
@@ -110,7 +110,7 @@ def create_app(test_config=None):
     # The app user has to be logged in to access this profile page
     @login_required
     def profile():
-        profile= current_user
+        profile=current_user
         if request.args.get('id'):
             user_id = int(request.args.get('id'))
             user = AppUser.query.get(user_id)
@@ -184,6 +184,8 @@ def create_app(test_config=None):
         profile_pic=profile_pic, form=form,
         map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'))
 
+    '''
+    An example
     @app.route('/detail', methods=['GET'])
     def detail():
         location_id = float(request.args.get('id'))
@@ -192,19 +194,22 @@ def create_app(test_config=None):
             'detail.html', 
             item=item,
             map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!')
-        ) 
+        ) '''
 
     @app.route("/logout")
     def logout():
         logout_user()
         return redirect(url_for('home'))
 
+    '''
+    An example
     @app.route('/map', methods=['GET'])
     def location():
         return render_template(
             'map.html', 
             map_key=os.getenv('GOOGLE_MAPS_API_KEY', 'GOOGLE_MAPS_API_KEY_WAS_NOT_SET?!'), title='Map'
         )
+    '''
 
     @app.route("/new-location", methods=['GET', 'POST'])
     def new_location():

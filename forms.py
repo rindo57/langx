@@ -19,8 +19,6 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired(), Length(min=2, max=10)])
     lastname = StringField('Last Name', validators=[DataRequired(), Length(min=5, max=10)])
-    #street = StringField('Street Name', validators=[DataRequired()])
-    #house = IntegerField('House Number', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     repeat_password = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
