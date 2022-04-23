@@ -48,3 +48,15 @@ footer {
 }
 
 #social-media a {border-radius: 50%;}
+
+@media (orientation: portrait) and (max-width: 768px) {
+    #homePagePic {
+        height: 37vh;
+    }
+}
+
+@media (orientation: landscape) and (max-width: 768px) {
+    #homePagePic {
+        height: 37vh;
+    }
+}
