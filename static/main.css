@@ -57,6 +57,6 @@ footer {
 
 @media (orientation: landscape) and (max-width: 768px) {
     #homePagePic {
-        height: 37vh;
+        height: 75vh;
     }
 }
