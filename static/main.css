@@ -54,7 +54,7 @@ footer {
         height: 37vh;
     }
     #register-form, #edit-form {
-        max-width: 400px;
+        max-width: 340px;
     }
     #login-form {
         max-width: 300px;
