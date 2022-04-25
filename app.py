@@ -199,6 +199,7 @@ def create_app(test_config=None):
     @app.route("/logout")
     def logout():
         logout_user()
+        flash('You have successfully logged out, thank you for your visit', 'success')
         return redirect(url_for('home'))
 
     '''
