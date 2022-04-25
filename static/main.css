@@ -53,10 +53,19 @@ footer {
     #homePagePic {
         height: 37vh;
     }
+    #register-form, #edit-form {
+        max-width: 400px;
+    }
+    #login-form {
+        max-width: 300px;
+    }
 }
 
 @media (orientation: landscape) and (max-width: 768px) {
     #homePagePic {
         height: 75vh;
+    }
+    #register-form, #edit-form {
+        max-width: 600px;
     }
 }
