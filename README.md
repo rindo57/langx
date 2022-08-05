@@ -1,10 +1,13 @@
 # Language-exchange-app
 
 This is a location-based web application that allows users to connect with other nearby users with the sole purpose
-<<<<<<< HEAD
 of learning and practicing new languages. The app is available on heroku at https://nsm-flask-app.herokuapp.com/
 
-<img width="400" height="200" alt="app_bg" src="https://user-images.githubusercontent.com/83452606/164338617-fecb7fc0-cd12-4f92-b472-b054e9856b0f.png">
+<img width="700" height="400" alt="Home1" src="https://user-images.githubusercontent.com/83452606/183064429-f6930c1b-e5ed-4022-9a4d-b9c99e11d570.png">
+<img width="700" height="400" alt="Home2" src="https://user-images.githubusercontent.com/83452606/183064471-bd23f9fa-db92-4595-8956-dfaca3ae534e.png">
+<img width="700" height="400" alt="Home3" src="https://user-images.githubusercontent.com/83452606/183064477-f86fe2c8-6507-48fb-bcc0-5440cdf6201a.png">
+<img width="700" height="400" alt="LoginPage" src="https://user-images.githubusercontent.com/83452606/183064879-4370f907-aef7-4463-8a0a-8c48e2efdcfa.png">
+<img width="700" height="400" alt="RegisterPage" src="https://user-images.githubusercontent.com/83452606/183064883-cd9c7046-d153-4aec-ab7b-9d784a7083e5.png">
 
 ## Initializing the project
 
@@ -335,6 +338,4 @@ pip3 install flask_cors
 pip3 install flask_wtf
 ```
 =======
-of learning and practicing new languages. The app is available on heroku at [Linguaphiles language app](https://nsm-flask-app.herokuapp.com/)
-<img width="950" height="500" alt="app_bg" src="https://user-images.githubusercontent.com/83452606/164338617-fecb7fc0-cd12-4f92-b472-b054e9856b0f.png">
->>>>>>> ba34490d1136cfba03a11bc72c476acb12d2c68e
+
