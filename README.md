@@ -1,6 +1,7 @@
 # Language-exchange-app
 
 This is a location-based web application that allows users to connect with other nearby users with the sole purpose
+<<<<<<< HEAD
 of learning and practicing new languages. The app is available on heroku at https://nsm-flask-app.herokuapp.com/
 
 <img width="400" height="200" alt="app_bg" src="https://user-images.githubusercontent.com/83452606/164338617-fecb7fc0-cd12-4f92-b472-b054e9856b0f.png">
@@ -333,3 +334,7 @@ pip3 install shapely
 pip3 install flask_cors
 pip3 install flask_wtf
 ```
+=======
+of learning and practicing new languages. The app is available on heroku at [Linguaphiles language app](https://nsm-flask-app.herokuapp.com/)
+<img width="950" height="500" alt="app_bg" src="https://user-images.githubusercontent.com/83452606/164338617-fecb7fc0-cd12-4f92-b472-b054e9856b0f.png">
+>>>>>>> ba34490d1136cfba03a11bc72c476acb12d2c68e
