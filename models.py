@@ -1,195 +1,139 @@
-import os
-from sqlalchemy import Column, String, Integer,create_engine
-from flask_sqlalchemy import SQLAlchemy
-from geoalchemy2.types import Geometry
-from shapely.geometry import Point
-from geoalchemy2.shape import to_shape
-from geoalchemy2.elements import WKTElement
-from geoalchemy2.functions import ST_DWithin
-from geoalchemy2.types import Geography
-from sqlalchemy.sql.expression import cast
-from geoalchemy2.shape import from_shape
-from flask_login import UserMixin
+from flask_pymongo import PyMongo
+from bson import ObjectId
+from geopy.distance import geodesic
 
-db = SQLAlchemy()
+# Initialize MongoDB
+mongo = PyMongo()
 
-'''
-setup_db(app):
-    binds a flask application and a SQLAlchemy service
-'''
-def setup_db(app):
-    database_path = os.getenv('DATABASE_URL', 'DATABASE_URL_WAS_NOT_SET?!')
-
-    # https://stackoverflow.com/questions/62688256/sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy-dialectspostgre
-    database_path = database_path.replace('postgres://', 'postgresql://')
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.app = app
-    db.init_app(app)
-
-'''
-    drops the database tables and starts fresh
-    can be used to initialize a clean database 
-'''
-
-def db_drop_and_create_all():
-    db.drop_all()
-    db.create_all()
-
-    # Initial sample data:
-    insert_sample_locations()
-
-def insert_sample_locations():
-    loc1 = SampleLocation(
-        description='Osterbrook 5',
-        geom=SampleLocation.point_representation(
-            latitude=53.550552, 
-            longitude=10.057432
+# AppUser Model
+class AppUser:
+    def __init__(self, firstname, lastname, lookup_address, fluent_languages, other_languages, 
+                 email, password, interests, geom=None, profile_pic='default.jpg', coord_latitude=None, coord_longitude=None):
+        self.firstname = firstname
+        self.lastname = lastname
+        self.lookup_address = lookup_address
+        self.fluent_languages = fluent_languages
+        self.other_languages = other_languages
+        self.email = email
+        self.password = password
+        self.interests = interests
+        self.profile_pic = profile_pic
+        self.coord_latitude = coord_latitude
+        self.coord_longitude = coord_longitude
+        self.geom = geom  # This is a GeoJSON point or a custom spatial representation
+    
+    @classmethod
+    def from_mongo(cls, data):
+        """Create an AppUser instance from a MongoDB document."""
+        return cls(
+            firstname=data.get('firstname'),
+            lastname=data.get('lastname'),
+            lookup_address=data.get('lookup_address'),
+            fluent_languages=data.get('fluent_languages'),
+            other_languages=data.get('other_languages'),
+            email=data.get('email'),
+            password=data.get('password'),
+            interests=data.get('interests'),
+            profile_pic=data.get('profile_pic', 'default.jpg'),
+            coord_latitude=data.get('coord_latitude'),
+            coord_longitude=data.get('coord_longitude'),
+            geom=data.get('geom')
         )
-    )
-    loc1.insert()
-
-    loc2 = SampleLocation(
-        description='Schadesweg 10',
-        geom=SampleLocation.point_representation(
-            latitude=53.546873, 
-            longitude=10.05178
-        )
-    )
-    loc2.insert()
-
-    loc3 = SampleLocation(
-        description='Bei der Hammer Kirche 3',
-        geom=SampleLocation.point_representation(
-            latitude=49.852851, 
-            longitude=12.109204
-        )
-    )
-    loc3.insert()
-
-class SpatialConstants:
-    SRID = 4326
-    @staticmethod
-    def point_representation(latitude, longitude):
-        point = 'POINT(%s %s)' % (longitude, latitude)
-        wkb_element = WKTElement(point, srid=SpatialConstants.SRID)
-        return wkb_element
-    @staticmethod
-    def get_location_latitude(geom):
-        point = to_shape(geom)
-        return point.y
-    @staticmethod
-    def get_location_longitude(geom):
-        point = to_shape(geom)
-        return point.x
-
-class SampleLocation(db.Model):
-    __tablename__ = 'sample_locations'
-
-    id = Column(Integer, primary_key=True)
-    description = Column(String(80))
-    geom = Column(Geometry(geometry_type='POINT', srid=SpatialConstants.SRID))  
-
-    @staticmethod
-    def point_representation(latitude, longitude):
-        point = 'POINT(%s %s)' % (longitude, latitude)
-        wkb_element = WKTElement(point, srid=SpatialConstants.SRID)
-        return wkb_element
-
-    @staticmethod
-    def get_items_within_radius(lat, lng, radius):
-        """Return all sample locations within a given radius (in meters)"""
-
-        #TODO: The arbitrary limit = 100 is just a quick way to make sure 
-        # we won't return tons of entries at once, 
-        # paging needs to be in place for real usecase
-        results = SampleLocation.query.filter(
-            ST_DWithin(
-                cast(SampleLocation.geom, Geography),
-                cast(from_shape(Point(lng, lat)), Geography),
-                radius)
-            ).limit(100).all() 
-
-        return [l.to_dict() for l in results]    
-
-    def get_location_latitude(self):
-        point = to_shape(self.geom)
-        return point.y
-
-    def get_location_longitude(self):
-        point = to_shape(self.geom)
-        return point.x  
-
+    
     def to_dict(self):
+        """Convert the AppUser instance to a dictionary for MongoDB."""
         return {
-            'id': self.id,
-            'description': self.description,
-            'location': {
-                'lng': self.get_location_longitude(),
-                'lat': self.get_location_latitude()
-            }
-        }
-
-    # Fetching nearest users profile
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()  
-
-# My project App user Model  
-
-class AppUser(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(10), nullable=False)
-    lastname = db.Column(db.String(10), nullable=False)
-    lookup_address = db.Column(db.String(200), nullable=False)
-    email = db.Column(db.String(50), unique=True, nullable=False)
-    profile_pic = db.Column(db.String(20), nullable=False, default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
-    fluent_languages = db.Column(db.String(200), nullable=False)
-    other_languages = db.Column(db.String(200), nullable=False)
-    interests = db.Column(db.Text, nullable=False)
-    geom = db.Column(Geometry(geometry_type='POINT', srid=SpatialConstants.SRID))
-
-    def __repr__(self):
-        return f"AppUser('{self.firstname}', '{self.lastname}', '{self.lookup_address}, \
-             '{self.fluent_languages}', '{self.other_languages}','{self.profile_pic}', '{self.interests}')"
-
-    def to_dict(self):
-        return {
-            'id': self.id,
             'firstname': self.firstname,
             'lastname': self.lastname,
-            'profile_pic':self.profile_pic,
+            'lookup_address': self.lookup_address,
             'fluent_languages': self.fluent_languages,
             'other_languages': self.other_languages,
-            'interests':self.interests,
-            'location': {
-                'lng': SpatialConstants.get_location_longitude(self.geom),
-                'lat': SpatialConstants.get_location_latitude(self.geom)
-            }
-        }  
+            'email': self.email,
+            'password': self.password,
+            'interests': self.interests,
+            'profile_pic': self.profile_pic,
+            'coord_latitude': self.coord_latitude,
+            'coord_longitude': self.coord_longitude,
+            'geom': self.geom
+        }
 
     @staticmethod
-    def get_items_within_radius(lat, lng, radius):
-        """Return all sample locations within a given radius (in meters)"""
+    def get_items_within_radius(latitude, longitude, radius):
+        """Find users within a given radius from a location using geospatial queries."""
+        # MongoDB needs a geospatial index on the 'geom' field for geo queries.
+        results = mongo.db.app_users.find({
+            'geom': {
+                '$near': {
+                    '$geometry': {
+                        'type': 'Point',
+                        'coordinates': [longitude, latitude]
+                    },
+                    '$maxDistance': radius * 1000  # Convert radius to meters
+                }
+            }
+        })
+        users = [AppUser.from_mongo(user) for user in results]
+        return users
 
-        #TODO: The arbitrary limit = 100 is just a quick way to make sure 
-        # we won't return tons of entries at once, 
-        # paging needs to be in place for real usecase
-        results = AppUser.query.filter(
-            ST_DWithin(
-                cast(AppUser.geom, Geography),
-                cast(from_shape(Point(lng, lat)), Geography),
-                radius)
-            ).limit(100).all() 
+# SampleLocation Model
+class SampleLocation:
+    def __init__(self, description, latitude, longitude, geom=None):
+        self.description = description
+        self.latitude = latitude
+        self.longitude = longitude
+        self.geom = geom or {'type': 'Point', 'coordinates': [longitude, latitude]}
 
-        return [l.to_dict() for l in results]  
+    def insert(self):
+        """Insert the location into the MongoDB collection."""
+        mongo.db.sample_locations.insert_one(self.to_dict())
+    
+    def to_dict(self):
+        """Convert the SampleLocation instance to a dictionary for MongoDB."""
+        return {
+            'description': self.description,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'geom': self.geom
+        }
+
+    @staticmethod
+    def from_mongo(data):
+        """Create a SampleLocation instance from a MongoDB document."""
+        return SampleLocation(
+            description=data.get('description'),
+            latitude=data.get('latitude'),
+            longitude=data.get('longitude'),
+            geom=data.get('geom')
+        )
+
+    @staticmethod
+    def get_locations_nearby(latitude, longitude, radius):
+        """Find locations within a given radius from a point."""
+        # MongoDB needs a geospatial index on the 'geom' field for geo queries.
+        results = mongo.db.sample_locations.find({
+            'geom': {
+                '$near': {
+                    '$geometry': {
+                        'type': 'Point',
+                        'coordinates': [longitude, latitude]
+                    },
+                    '$maxDistance': radius * 1000  # Radius in meters
+                }
+            }
+        })
+        locations = [SampleLocation.from_mongo(location) for location in results]
+        return locations
+
+# SpatialConstants for geospatial functions (e.g., creating GeoJSON points)
+class SpatialConstants:
+    @staticmethod
+    def point_representation(latitude, longitude):
+        """Return a GeoJSON-like Point representation."""
+        return {
+            "type": "Point",
+            "coordinates": [longitude, latitude]
+        }
+
+# Helper function to calculate distance between two lat-longs (in meters)
+def calculate_distance(lat1, lon1, lat2, lon2):
+    return geodesic((lat1, lon1), (lat2, lon2)).meters
