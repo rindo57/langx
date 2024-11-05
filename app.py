@@ -16,7 +16,7 @@ def create_app(test_config=None):
     app = Flask(__name__)
     
     # Set up MongoDB connection
-    app.config['MONGO_URI'] = os.getenv('MONGO_URI', '"mongodb+srv://720pp:fire@cluster0.ser1dtu.mongodb.net/?retryWrites=true&w=majority')
+    app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/mydatabase')
     mongo.init_app(app)
     
     CORS(app)
@@ -205,4 +205,4 @@ def create_app(test_config=None):
 app = create_app()
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-   
+    app.run(host='127.0.0.1', port=port, debug=True)
